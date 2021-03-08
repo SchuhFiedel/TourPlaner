@@ -13,21 +13,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFApp2
+namespace TourFinder
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : NavigationWindow
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
             //Output in VS-OutPutWindow: System.Diagnostics.Debug.WriteLine("HelloThere");
-
         }
-
-        
     }
 }
 
