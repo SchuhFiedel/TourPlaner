@@ -4,10 +4,11 @@ using System.Windows.Input;
 
 namespace TourFinder
 {
-    public class ExecuteCommand //: ICommand
-    {/*
+    public class ExecuteCommand : ICommand
+    {
         private readonly MainViewModel _mainViewModel;
-    
+        public event EventHandler CanExecuteChanged;
+
         public ExecuteCommand(MainViewModel mainViewModel)
         {
             _mainViewModel = mainViewModel;
@@ -21,7 +22,7 @@ namespace TourFinder
                 }
             };
         }
-/*
+
         public bool CanExecute(object parameter)
         {
             Debug.Print("command: can execute");
@@ -30,12 +31,10 @@ namespace TourFinder
 
         public void Execute(object parameter)
         {
-            //Debug.Print("command: execute");
-            //_mainViewModel.Output = $"{_mainViewModel.Input}!";
-            //_mainViewModel.Input = string.Empty;
-            //Debug.Print("command: execute done");
+            Debug.Print("command: execute");
+            _mainViewModel.Output = $"{_mainViewModel.Input}!";
+            _mainViewModel.Input = string.Empty;
+            Debug.Print("command: execute done");
         }
-
-        public event EventHandler CanExecuteChanged;*/
     }
 }

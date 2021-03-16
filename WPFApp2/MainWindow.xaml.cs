@@ -24,6 +24,7 @@ namespace TourFinder
         {
             InitializeComponent();
             //Output in VS-OutPutWindow: System.Diagnostics.Debug.WriteLine("HelloThere");
+
         }
     }
 }

@@ -10,11 +10,19 @@ namespace TourFinder
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute)); /*Expands to if execute!= null*/
             _canExecute = canExecute;
         }
 
         public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
+        /*Expands too (null coalescing operator)
+         if(_canExecute.Invoke(parameter) != null){
+            CanExecute = :canExecute.Invoke(parameter);   
+        }
+        else{
+            CanExecute = true;
+        }
+         */
         public void Execute(object parameter) => _execute.Invoke(parameter);
 
         public event EventHandler CanExecuteChanged

@@ -4,7 +4,10 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows;
 using System;
-using TourFinder.BackendStuff.DB; 
+using TourFinder.BackendStuff.DB;
+using WPFApp2;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace TourFinder
 {
@@ -13,6 +16,16 @@ namespace TourFinder
         private string _output = "Hello There!";
         private string _input;
         Random rand = new Random();
+
+
+        /* Probably need to delete this later*/
+        public ObservableCollection<Log> loglist { get; set; } = new ObservableCollection<Log>() {
+                                                                                                   new Log() { Date = "0.0.0", Distance= 50, Duration="0.0", Feeling="Nice"},
+                                                                                                   new Log() { Date = "11111", Distance= 15155, Duration="1.2.23.0"}
+                                                                                                  };
+        public ObservableCollection<Tour> tourlist { get; set; } = new ObservableCollection<Tour>() { new Tour() { Name = "Tour1" }, new Tour() { Name = "Tour2" }, new Tour() { Name = "Tour3" } };
+
+
 
         public string Input
         {
@@ -53,16 +66,15 @@ namespace TourFinder
                 if (_output != value)
                 {
                     Debug.Print("set Output");
-                    /*
-                    RestDataClass db= RestDataClass.Instance();
+/*ReMOVE THAT STUFF LATER*/
+                    RestDataClass db = RestDataClass.Instance();
                     _output = db.GetAllCardsFromDB() ;
-                    */
-                    _output = value;
+                    
+                    //_output = value;
                     Debug.Print("fire propertyChanged: Output");
                     OnPropertyChanged();
                 }
                 Application.Current.MainWindow.FontWeight = FontWeight.FromOpenTypeWeight(Convert.ToInt32(rand.Next() % 999));
-                
             }
         }
 
@@ -75,12 +87,9 @@ namespace TourFinder
             //Debug.Print("ctor MainViewModel");
             //this.ExecuteCommand = new ExecuteCommand(this);
 
-            #region Simpler Solution
-
             // Alternative: https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
             this.ExecuteCommand = new RelayCommand((_) => Output = Input);
 
-            #endregion
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
