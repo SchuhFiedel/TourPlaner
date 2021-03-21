@@ -6,6 +6,7 @@ using System.Windows;
 using System;
 using TourFinder.BackendStuff.DB;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 
 namespace TourFinder
@@ -60,10 +61,11 @@ namespace TourFinder
                 {
                     Debug.Print("set Input-value");
                     _input = value;
-
+                    RestDataClass rd = RestDataClass.Instance();
+                    Output = rd.TryConnection() ;
                     // it does not work to fire an event from outside in C#
                     // can be achieved by creating a method like "RaiseCanExecuteChanged".
-                    // this.ExecuteCommand.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+                    //this.ExecuteSearch.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
                     // this triggers the UI and the ExecuteCommand
                     Debug.Print("fire propertyChanged: Input");
