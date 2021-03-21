@@ -6,7 +6,6 @@ namespace TourFinder.BackendStuff.DB
 {
     class RestDataClass
     {
-        private static IDBConnector db;
         private static RestDataClass instance = null;
 
         public static RestDataClass Instance()
@@ -21,16 +20,12 @@ namespace TourFinder.BackendStuff.DB
 
         private RestDataClass()
         {
-            db = NpgSqlConnector.Instance();
-        }
 
-        public string GetAllCardsFromDB(){
-            return db.GetAllCardsFromDB();
         }
 
         ~RestDataClass()
         {
-            db.CloseConnection();
+
         }
     }
 }
