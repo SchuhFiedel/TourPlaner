@@ -76,14 +76,11 @@
         <!--#region Main Section-->
         <TabControl Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
             <TabItem Header="Route">
-                <Image Name="ImageViewer">
-                    <Image.Source>
-                        <BitmapImage DecodePixelWidth="500" UriSource="AppLayers.jpg"></BitmapImage>
-                    </Image.Source>
+                <Image  Name="ImageViewer"  Margin="5" Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}">
                 </Image>
             </TabItem>
             <TabItem Header="Description">
-                <Label Content="{Binding Output}"></Label>
+                <Label Content="{Binding Output, UpdateSourceTrigger=PropertyChanged}"></Label>
             </TabItem>
         </TabControl>
 
@@ -94,14 +91,13 @@
                 <MenuItem Header="Delete"></MenuItem>
             </Menu>
 
-            <DataGrid AutoGenerateColumns="False" Name="DataGrid" DockPanel.Dock="Top" ItemsSource="{Binding Loglist}">
+            <DataGrid HeadersVisibility="Column" AutoGenerateColumns="False" Name="DataGrid" DockPanel.Dock="Top" ItemsSource="{Binding DataGridLogList, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns >
                     <DataGridTextColumn Header="Date" Binding="{Binding Date}"/>
                     <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
                     <DataGridTextColumn Header="Distance" Binding="{Binding Duration}"/>
                     <DataGridTextColumn Header="Weather" Binding="{Binding Weather}"/>
                     <DataGridTextColumn Header="Feeling" Binding="{Binding Feeling}"/>
-                    
                 </DataGrid.Columns>
                 
             </DataGrid>

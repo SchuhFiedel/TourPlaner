@@ -13,22 +13,30 @@ namespace TourFinder
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private string _output = "Hello There!";
+        private string _output = "AAAAAAAAA";
         private string _input;
         private Tour _selectedTour;
+        private string _imagePath = "D:\\Documents\\_Mein Stuff\\ProgrammingStuff\\FH_SS2021\\SWEI\\WPFApp2\\WPFApp2\\img\\AppLayers.JPG";
         //Random rand = new Random();
+
+        public ICommand ExecuteSearch { get; }
+        public ICommand ExecuteTourListBox { get; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
 
         /* Probably need to delete this later*/
-        public ObservableCollection<Log> Loglist { get; set; } = new ObservableCollection<Log>() {
-                                                                                                   new Log() { Date = "0.0.0", Distance= 50, Duration="0.0", Feeling="Nice"},
-                                                                                                   new Log() { Date = "11111", Distance= 15155, Duration="1.2.23.0"}
-                                                                                                  };
+
         public ObservableCollection<Tour> Tourlist { get; set; } = new ObservableCollection<Tour>() {
-                                                                                                      new Tour() { Name = "Tour1" , Distance = 15, Description = "Nice and long"},
-                                                                                                      new Tour() { Name = "Tour2" , Description = "Nice and short"}, 
-                                                                                                      new Tour() { Name = "Tour3" , Description = "Not nice"} 
-                                                                                                    };
+            new Tour() { Name = "Tour1" , Distance = 15, Description = "Nice and long", LogList = new ObservableCollection<Log>() {
+                                                                                        new Log() { Date = "0.0.0", Distance= 50, Duration="0.0", Feeling="Nice"},
+                                                                                        new Log() { Date = "11111", Distance= 15155, Duration="1.2.23.0"}
+                        }
+            },
+            new Tour() { Name = "Tour2" , Description = "Nice and short"},
+            new Tour() { Name = "Tour3" , Description = "Not nice"}
+        };
+
+        public ObservableCollection<Log> DataGridLogList { get; set; } = new ObservableCollection<Log>();
 
         public Tour TourSelection
         {
@@ -41,7 +49,9 @@ namespace TourFinder
                 if(_selectedTour != value)
                 {
                     _selectedTour = value;
+                    DataGridLogList = _selectedTour.LogList;
                     Output = value.Name + "\n" + value.Description + "\n" + value.Distance;
+                    OnPropertyChanged(nameof(DataGridLogList));
                     OnPropertyChanged(nameof(TourSelection));
                 }
             }
@@ -51,24 +61,15 @@ namespace TourFinder
         {
             get
             {
-                Debug.Print("read Input");
                 return _input;
             }
             set
             {
-                Debug.Print("write Input");
                 if (Input != value)
                 {
-                    Debug.Print("set Input-value");
                     _input = value;
-                    RestDataClass rd = RestDataClass.Instance();
-                    Output = rd.TryConnection() ;
-                    // it does not work to fire an event from outside in C#
-                    // can be achieved by creating a method like "RaiseCanExecuteChanged".
                     //this.ExecuteSearch.CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-
                     // this triggers the UI and the ExecuteCommand
-                    Debug.Print("fire propertyChanged: Input");
                     OnPropertyChanged(nameof(Input));
                 }
             }
@@ -78,29 +79,41 @@ namespace TourFinder
         {
             get
             {
-                Debug.Print("read Output");
                 return _output;
             }
             set
             {
-                Debug.Print("write Output");
                 if (_output != value)
                 {
-                    Debug.Print("set Output");
-                    
                     _output = value;
-                    Debug.Print("fire propertyChanged: Output");
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Output));
                 }
             }
         }
 
-        public ICommand ExecuteSearch { get; }
-        public ICommand ExecuteTourListBox { get; }
+        public string ImagePath
+        {
+            get
+            {
+                return _imagePath;
+            }
+            set
+            {
+                if(_imagePath != value)
+                {
+                    _imagePath = value;
+                    OnPropertyChanged(nameof(ImagePath));
+                }
+            }
+        }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
+        public async void GetRouteGetMap()
+        {
+            RestDataClass rb = RestDataClass.Instance();
+            ImagePath = await rb.GetRouteSaveImg();
+            Output = ImagePath;
+            Debug.Print("WE DID IT BOIS WE GOT OUT \n" + ImagePath + "\n" + _imagePath);
+        }
 
         public MainViewModel()
         {
@@ -108,6 +121,8 @@ namespace TourFinder
             // Alternative: https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
             this.ExecuteTourListBox = new RelayCommand((_) => Output = TourSelection.Name);
             this.ExecuteSearch = new RelayCommand((_) => Output = Input);
+            //execute function with no return value:
+            this.ExecuteSearch = new RelayCommand((_) => GetRouteGetMap());
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

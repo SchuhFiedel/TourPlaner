@@ -1,18 +1,72 @@
 using NUnit.Framework;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using System.Linq;
 
 namespace NUnitTestProject1
 {
     public class Tests
     {
+
+        static string PATH = "..\\..\\..\\..\\WriteLines.json";
+        string allText = File.ReadAllText(PATH);
+
         [SetUp]
         public void Setup()
         {
+            string textWithEnter = allText.Replace("{", "\n{\n");
+            textWithEnter = textWithEnter.Replace("}", "\n}\n");
+            textWithEnter = textWithEnter.Replace(",", ",\n");
+            File.WriteAllText("..\\..\\..\\..\\Cleanup.json", textWithEnter);
+            string[] splitInComma = allText.Split(",");
         }
 
         [Test]
-        public void Test1()
+        public void JSonReadBoundingBoxTest()
         {
-            Assert.Pass();
+            JObject mapData = JObject.Parse(allText);
+            string output = (string)mapData["route"]["boundingBox"]["lr"]["lng"].ToString();
+            Assert.IsNotNull(output); 
+        } 
+
+        [Test]
+        public void JSonReadSessionIDTest()
+        {
+            JObject mapData = JObject.Parse(allText);
+            string output = (string)mapData["route"]["sessionId"].ToString();
+            Assert.IsNotNull(output);
+        }
+
+        /*
+        [Test]
+        public void JSonReadRandTest()
+        {
+            JObject mapData = JObject.Parse(allText);
+            string output = (string)mapData["route"]["rand"].ToString();
+            Assert.IsNotNull(output);
+        }*/
+
+        [Test]
+        public void MakeNewFilenameWithAccendingID()
+        {
+            DirectoryInfo directory = new DirectoryInfo("..\\..\\..\\..\\WPFApp2\\img");
+            string myFile = directory.GetFiles()
+                                .OrderByDescending(f => f.LastWriteTime)
+                                .First()
+                                .Name;
+
+            string value = "";
+            foreach(char i in myFile)
+            {
+                if (char.IsDigit(i))
+                {
+                    value += i;
+                }
+            }
+            int intValue = int.Parse(value);
+
+            Assert.AreEqual(1, intValue);
         }
     }
 }
