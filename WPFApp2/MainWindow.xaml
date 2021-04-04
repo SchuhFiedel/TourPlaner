@@ -57,10 +57,12 @@
         <!--#region Side Section-->
         <DockPanel Grid.Column="0" Grid.Row="2" Grid.RowSpan="3">
             <Menu DockPanel.Dock="Top" VerticalAlignment="Top" Name="Tours">
-                <MenuItem Header="Tours" IsEnabled="False"></MenuItem>
-                <MenuItem Header="_New" Command="{Binding OpenAddWindow}"></MenuItem>
-                <MenuItem Header="_Del"></MenuItem>
-                <MenuItem Header="_Ref"></MenuItem>
+                <MenuItem Header="Tours" IsEnabled="False"/>
+                <MenuItem Header="_New" 
+                          Command="{Binding ExecuteOpenAddWindow}"/>
+                <MenuItem Header="_Del"
+                          Command="{Binding ExecuteDeleteTour}"/>
+                <MenuItem Header="_Ref"/>
             </Menu>
 
             <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Tourlist}" SelectedItem="{Binding TourSelection, UpdateSourceTrigger=PropertyChanged}">

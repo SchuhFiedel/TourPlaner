@@ -6,7 +6,44 @@
         xmlns:local="clr-namespace:TourFinder"
         mc:Ignorable="d"
         Title="AddTourWindow" Height="450" Width="800">
-    <Grid>
+
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid RenderTransformOrigin="0.0,0.0">
+        <!--#region Definitions-->
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <!--#endregion Definitions-->
+
+        <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" Content="Name"/>
+        <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" Content="StartLocation"/>
+        <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" Content="EndLocation"/>
+        <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalContentAlignment="Center" Content="Description"/>
+        <TextBox Grid.Row="0" Grid.Column="1" 
+                 VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                 Text="{Binding TourAddUtilityProperty.Name, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="1" Grid.Column="1" 
+                 VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                 Text="{Binding TourAddUtilityProperty.StartLocation, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="2" Grid.Column="1" 
+                 VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                 Text="{Binding TourAddUtilityProperty.EndLocation, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="3" Grid.Column="1" 
+                 VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
+                 Text="{Binding TourAddUtilityProperty.Description, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="100,5,100,5" Command="{Binding ExecuteAddTour}">Add Tour</Button>
         
     </Grid>
 </Window>
