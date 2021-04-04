@@ -13,5 +13,6 @@ namespace TourFinder
         public int Distance { get; set; }
         public string Description { get; set; }
         public ObservableCollection<Log> LogList { get; set; }
+        public string MapImagePath { get; set; }
     }
 }

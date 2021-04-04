@@ -58,7 +58,7 @@
         <DockPanel Grid.Column="0" Grid.Row="2" Grid.RowSpan="3">
             <Menu DockPanel.Dock="Top" VerticalAlignment="Top" Name="Tours">
                 <MenuItem Header="Tours" IsEnabled="False"></MenuItem>
-                <MenuItem Header="_New"></MenuItem>
+                <MenuItem Header="_New" Command="{Binding OpenAddWindow}"></MenuItem>
                 <MenuItem Header="_Del"></MenuItem>
                 <MenuItem Header="_Ref"></MenuItem>
             </Menu>
@@ -91,15 +91,9 @@
                 <MenuItem Header="Delete"></MenuItem>
             </Menu>
 
-            <DataGrid HeadersVisibility="Column" AutoGenerateColumns="False" Name="DataGrid" DockPanel.Dock="Top" ItemsSource="{Binding DataGridLogList, UpdateSourceTrigger=PropertyChanged}">
-                <DataGrid.Columns >
-                    <DataGridTextColumn Header="Date" Binding="{Binding Date}"/>
-                    <DataGridTextColumn Header="Duration" Binding="{Binding Duration}"/>
-                    <DataGridTextColumn Header="Distance" Binding="{Binding Duration}"/>
-                    <DataGridTextColumn Header="Weather" Binding="{Binding Weather}"/>
-                    <DataGridTextColumn Header="Feeling" Binding="{Binding Feeling}"/>
+            <DataGrid HeadersVisibility="Column" AutoGenerateColumns="true" Name="DataGrid" DockPanel.Dock="Top" ItemsSource="{Binding DataGridLogList, UpdateSourceTrigger=PropertyChanged}">
+                <DataGrid.Columns>
                 </DataGrid.Columns>
-                
             </DataGrid>
         </DockPanel>
         <!--#endregion Main Section-->
