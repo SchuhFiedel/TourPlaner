@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows;
 using System;
-using TourFinder.BackendStuff.DB;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -162,6 +161,7 @@ namespace TourFinder
 
         public void DeleteTour()
         {
+// TO-DO
             if(TourSelection != null)
             {
                 MessageBox.Show("DELETE TOUR: \n" + TourAddUtilityProperty.Name + 
@@ -169,6 +169,7 @@ namespace TourFinder
                                              "\n" + TourAddUtilityProperty.StartLocation + 
                                              "\n" + TourAddUtilityProperty.EndLocation);
             }
+            
         }
 
         public void OpenAddWindow()

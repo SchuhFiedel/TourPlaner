@@ -11,7 +11,7 @@ using System.Net;
 
 //How to use HTTPClient https://zetcode.com/csharp/httpclient/
 
-namespace TourFinder.BackendStuff.DB
+namespace TourFinder
 {
     class RestDataClass
     {

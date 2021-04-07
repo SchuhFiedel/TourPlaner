@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Npgsql;
 
-namespace TourFinder.BackendStuff.DB
+namespace TourFinder
 {
     class NpgSqlConnector : IDBConnector
     {

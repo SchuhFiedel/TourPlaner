@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace TourFinder.BackendStuff.DB
+namespace TourFinder
 {
     interface IDBConnector
     {
