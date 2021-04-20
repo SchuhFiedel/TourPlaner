@@ -60,7 +60,7 @@ namespace TourFinder
                     if(_selectedTour != null)
                     {
                         DataGridLogList = _selectedTour.LogList;
-                        Output = value.Name + "\n" + value.Description + "\n" + value.Distance;
+                        Output = value.Name + "\n" + value.Description + "\n" + value.Distance + "\n" + value.MapImagePath;
                         ImagePath = _selectedTour.MapImagePath;
                     }
                     else
@@ -132,31 +132,31 @@ namespace TourFinder
         {
             // Alternative: https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
             this.ExecuteTourListBox = new RelayCommand((_) => Output = TourSelection.Name);
-            this.ExecuteSearch = new RelayCommand((_) => Output = Input);
+            // this.ExecuteSearch = new RelayCommand((_) => Output = Input);
 
             //execute function with no return value:
-            this.ExecuteSearch = new RelayCommand((_) => GetRouteGetMap());
+            // this.ExecuteSearch = new RelayCommand((_) => GetRouteGetMap());
             this.ExecuteOpenAddWindow = new RelayCommand((_) => OpenAddWindow());
             this.ExecuteDeleteTour = new RelayCommand((_) => DeleteTour());
             this.ExecuteAddTour = new RelayCommand((_) => AddTour());
         }
 
-        public async void GetRouteGetMap()
+        public async void AddTour()
         {
             RestDataClass rb = RestDataClass.Instance();
-            ImagePath = await rb.GetRouteSaveImg();
-            Output = ImagePath;
-            Debug.Print("WE DID IT BOIS WE GOT EM \n" + ImagePath + "\n" + _imagePath);
-        }
+            TourAddUtilityProperty.ImagePath = await rb.GetRouteSaveImg(TourAddUtilityProperty.StartLocation, TourAddUtilityProperty.EndLocation);
+            ImagePath = TourAddUtilityProperty.ImagePath;
+            //Debug.Print("WE DID IT BOIS WE GOT EM \n" + ImagePath + "\n" + _imagePath);
 
-        public void AddTour()
-        {
-            this.Tourlist.Add(new Tour() { 
-                                           Name = TourAddUtilityProperty.Name, 
-                                           StartLocation = TourAddUtilityProperty.StartLocation, 
-                                           EndLocation = TourAddUtilityProperty.EndLocation, 
-                                           Description=TourAddUtilityProperty.Description
-                                          });
+            this.Tourlist.Add(new Tour()
+            {
+                Name = TourAddUtilityProperty.Name,
+                StartLocation = TourAddUtilityProperty.StartLocation,
+                EndLocation = TourAddUtilityProperty.EndLocation,
+                Description = TourAddUtilityProperty.Description,
+                MapImagePath = TourAddUtilityProperty.ImagePath
+            }
+            );
         }
 
         public void DeleteTour()
@@ -169,12 +169,11 @@ namespace TourFinder
                                              "\n" + TourAddUtilityProperty.StartLocation + 
                                              "\n" + TourAddUtilityProperty.EndLocation);
             }
-            
         }
 
         public void OpenAddWindow()
         {
-            Debug.Print("AddTour Window Opened");
+            //Debug.Print("AddTour Window Opened");
             PopOutWindow = new AddTourWindow{DataContext = this};
             PopOutWindow.Show();
         }

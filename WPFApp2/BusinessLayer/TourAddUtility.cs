@@ -16,6 +16,7 @@ namespace TourFinder
         string _StartLocation;
         string _EndLocation;
         string _Description;
+        string _ImagePath;
 
         public string Name {
             get{
@@ -58,7 +59,6 @@ namespace TourFinder
                 }
             } 
         }
-
         public string Description { 
             get 
             {
@@ -70,6 +70,20 @@ namespace TourFinder
                 {
                     this._Description = value;
                     OnPropertyChanged(nameof(Description));
+                }
+            }
+        }
+        public string ImagePath { 
+            get 
+            {
+                return this._ImagePath; 
+            }
+            set
+            {
+                if (_ImagePath != value)
+                {
+                    this._ImagePath = value;
+                    OnPropertyChanged(nameof(ImagePath));
                 }
             }
         }

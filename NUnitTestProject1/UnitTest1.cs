@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Linq;
+using TourFinder;
 
 namespace NUnitTestProject1
 {
@@ -67,6 +68,13 @@ namespace NUnitTestProject1
             int intValue = int.Parse(value);
 
             Assert.AreEqual(1, intValue);
+        }
+
+        [Test]
+        public void TourAddUtilityTest()
+        {
+            TourAddUtility tourAddUtility = new TourAddUtility();
+
         }
     }
 }

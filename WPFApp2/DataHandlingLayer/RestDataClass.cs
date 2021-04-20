@@ -20,7 +20,7 @@ namespace TourFinder
         private static string key = "RtfQrP95xMphxahgFEmU8ZQkHBQfC4eu";
         private static string mapquestDirectionsUri = "http://www.mapquestapi.com/directions/v2/route?key=";
         private static string mapquestStaticMapUri = "http://www.mapquestapi.com/staticmap/v5/map?key=";
-        private static string internalPath = "D:\\Documents\\_Mein Stuff\\ProgrammingStuff\\FH_SS2021\\SWEI\\WPFApp2\\WPFApp2\\";
+        private static string internalPath = "D:\\Documents\\_Mein Stuff\\ProgrammingStuff\\FH_SS2021\\SWEI\\WPFApp2\\WPFApp2\\img\\maps";
 
         public static RestDataClass Instance()
         {
@@ -41,18 +41,20 @@ namespace TourFinder
             }
         }
 
-        ~RestDataClass()
-        {
-        }
-
-        public async Task<string> GetRouteSaveImg()
+        /// <summary>
+        /// Get new Route information, save image and return img location in path
+        /// </summary>
+        /// <param name="startLocation"></param>
+        /// <param name="endLocation"></param>
+        /// <returns><string>newImageLocation</string></returns>
+        public async Task<string> GetRouteSaveImg(string startLocation, string endLocation)
         {
             try {
                 string respBody = httpClient
-                                    .GetStringAsync(mapquestDirectionsUri + key + "&from=Clarendon Blvd,Arlington,VA" + "&to=2400+S+Glebe+Rd,+Arlington,+VA")
+                                    .GetStringAsync(mapquestDirectionsUri + key + "&from="+startLocation + "&to="+endLocation)
                                     .Result;
 
-                Debug.WriteLine("OUTPUT FROM WEBSITE_\n" +respBody);
+                //Debug.WriteLine("OUTPUT FROM WEBSITE_\n" +respBody);
 
                 Task filetask = File.WriteAllTextAsync("..\\..\\..\\..\\WriteLines.json", respBody);
                 filetask.Wait();
@@ -69,9 +71,9 @@ namespace TourFinder
 
                 string boundingBox = ul_lat + "," + ul_lng + "," + lr_lat + "," + lr_lng;
 
-                string saveImgTask = await GetAndSaveImage(boundingBox, sessionId);
+                string saveImgPath = await GetAndSaveImage(boundingBox, sessionId);
 
-                return "SavedIt";
+                return saveImgPath;
             }
             catch (HttpRequestException e)
             {
@@ -81,16 +83,22 @@ namespace TourFinder
             }
         }
 
+        /// <summary>
+        /// Gets image from MapQuestAPI, saves it to path and returns path string
+        /// </summary>
+        /// <param name="boundingBox"></param>
+        /// <param name="sessionID"></param>
+        /// <returns><string>newImageLocation</string></returns>
         private async Task<string> GetAndSaveImage(string boundingBox, string sessionID)
         {
-            System.IO.Directory.CreateDirectory(internalPath+"img\\maps");
+            System.IO.Directory.CreateDirectory(internalPath);
 
             string myFile = "0";
             int intFileNameValue = 0;
             string fileNameValue = "";
             try
             {
-                DirectoryInfo directory = new DirectoryInfo(internalPath + "img\\maps");
+                DirectoryInfo directory = new DirectoryInfo(internalPath);
                 myFile = directory.GetFiles()
                                     .OrderByDescending(f => f.LastWriteTime)
                                     .First()
@@ -112,15 +120,15 @@ namespace TourFinder
 
             fileNameValue = intFileNameValue.ToString();
 
-            string fileLocation = internalPath + $"img\\maps\\map{fileNameValue}.jpg";
+            string fileLocation = internalPath + $"\\map{fileNameValue}.jpg";
 
-            Debug.Print("We do be here though");
+            //Debug.Print("We do be here though");
             using WebClient client = new();
             await client.DownloadFileTaskAsync(
                 new Uri(mapquestStaticMapUri + key + $"&session={sessionID}&boundingBox={boundingBox}&format=jpg"),
                 fileLocation);
 
-            return fileLocation;
+            return "map"+fileNameValue+".jpg";
         }
     }
 }

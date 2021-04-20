@@ -78,8 +78,7 @@
         <!--#region Main Section-->
         <TabControl Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
             <TabItem Header="Route">
-                <Image  Name="ImageViewer"  Margin="5" Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}">
-                </Image>
+                <Image  Name="ImageViewer"  Margin="5" Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}"/>
             </TabItem>
             <TabItem Header="Description">
                 <Label Content="{Binding Output, UpdateSourceTrigger=PropertyChanged}"></Label>
