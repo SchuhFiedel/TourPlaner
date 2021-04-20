@@ -144,9 +144,11 @@ namespace TourFinder
         public async void AddTour()
         {
             RestDataClass rb = RestDataClass.Instance();
-            TourAddUtilityProperty.ImagePath = await rb.GetRouteSaveImg(TourAddUtilityProperty.StartLocation, TourAddUtilityProperty.EndLocation);
+            string returnValue = await rb.GetRouteSaveImg(TourAddUtilityProperty.StartLocation, TourAddUtilityProperty.EndLocation);
+            string[] pathAndDist = returnValue.Split("::");
+            TourAddUtilityProperty.ImagePath = pathAndDist[0];
+            TourAddUtilityProperty.Distance = float.Parse(pathAndDist[1]);
             ImagePath = TourAddUtilityProperty.ImagePath;
-            //Debug.Print("WE DID IT BOIS WE GOT EM \n" + ImagePath + "\n" + _imagePath);
 
             this.Tourlist.Add(new Tour()
             {
@@ -154,7 +156,8 @@ namespace TourFinder
                 StartLocation = TourAddUtilityProperty.StartLocation,
                 EndLocation = TourAddUtilityProperty.EndLocation,
                 Description = TourAddUtilityProperty.Description,
-                MapImagePath = TourAddUtilityProperty.ImagePath
+                MapImagePath = TourAddUtilityProperty.ImagePath,
+                Distance = TourAddUtilityProperty.Distance
             }
             );
         }

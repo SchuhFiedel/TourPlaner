@@ -65,15 +65,15 @@ namespace TourFinder
                 string lr_lat = (string)mapData["route"]["boundingBox"]["lr"]["lat"].ToString().Replace(",", ".");
                 string lr_lng = (string)mapData["route"]["boundingBox"]["lr"]["lng"].ToString().Replace(",", ".");
 
-                string sessionId = (string)mapData["route"]["sessionId"].ToString();
+                string distance = (string)mapData["route"]["distance"].ToString();
 
-                //string randNumber = (string)mapData["route"]["rand"].ToString();
+                string sessionId = (string)mapData["route"]["sessionId"].ToString();
 
                 string boundingBox = ul_lat + "," + ul_lng + "," + lr_lat + "," + lr_lng;
 
                 string saveImgPath = await GetAndSaveImage(boundingBox, sessionId);
 
-                return saveImgPath;
+                return saveImgPath + "::" + distance;
             }
             catch (HttpRequestException e)
             {

@@ -17,6 +17,7 @@ namespace TourFinder
         string _EndLocation;
         string _Description;
         string _ImagePath;
+        float _Distance;
 
         public string Name {
             get{
@@ -84,6 +85,20 @@ namespace TourFinder
                 {
                     this._ImagePath = value;
                     OnPropertyChanged(nameof(ImagePath));
+                }
+            }
+        }
+        public float Distance {
+            get 
+            { 
+                return this._Distance; 
+            }
+            set 
+            {
+                if (_Distance != value) 
+                {
+                    this._Distance = value;
+                    OnPropertyChanged(nameof(Distance));
                 }
             }
         }

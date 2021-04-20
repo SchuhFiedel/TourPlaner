@@ -41,10 +41,10 @@ namespace NUnitTestProject1
 
         
         [Test]
-        public void JSonReadRandTest()
+        public void JSonReadDistanceTest()
         {
             JObject mapData = JObject.Parse(allText);
-            string output = (string)mapData["route"]["hasTollRoad"].ToString();
+            string output = (string)mapData["route"]["distance"].ToString();
             Assert.IsNotNull(output);
         }
 
