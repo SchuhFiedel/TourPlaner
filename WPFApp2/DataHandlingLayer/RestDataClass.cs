@@ -53,6 +53,7 @@ namespace TourFinder
                 string respBody = httpClient
                                     .GetStringAsync(mapquestDirectionsUri + key + "&from="+startLocation + "&to="+endLocation)
                                     .Result;
+                //httpClient.GetByteArrayAsync();
 
                 //Debug.WriteLine("OUTPUT FROM WEBSITE_\n" +respBody);
 

@@ -78,7 +78,6 @@ namespace NUnitTestProject1
             tourAddUtility.Name = "Name";
             Tour tour = new Tour() { Description = tourAddUtility.Description, Name = tourAddUtility.Name };
             Assert.IsTrue(tour.Name == tourAddUtility.Name && tour.Description == tourAddUtility.Description);
-            
         }
     }
 }
