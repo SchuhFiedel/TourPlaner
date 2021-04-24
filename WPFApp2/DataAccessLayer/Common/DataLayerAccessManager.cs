@@ -52,7 +52,7 @@ namespace TourFinder.DataAccessLayer.Common
         public List<Tour> GetToursFromDB()
         {
             Debug.WriteLine("GET ALL TOURS FROM DB");
-            return (List<Tour>)tourDAO.GetItems();
+            return (List<Tour>)tourDAO.GetTours();
         }
 
         public List<Log> DeleteLogAndRefreshTourLogList()

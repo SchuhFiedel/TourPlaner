@@ -21,7 +21,7 @@ namespace NUnitTestProject1
             Assert.IsTrue(tour.Name == tourAddUtility.Name && tour.Description == tourAddUtility.Description);
         }
 
-        /*
+        
         [Test]
         public void DataLayerAccessManagerTest ()
         {
@@ -30,12 +30,12 @@ namespace NUnitTestProject1
             Assert.IsNotNull(DLAM);
         }
 
-        /*
+        
         [Test]
-        public void misc()
+        public void ConnectionStringTest()
         {
             var tmp = ConfigurationManager.ConnectionStrings;
-            Assert.IsNotNull(ConfigurationManager.ConnectionStrings.Count);
-        }*/
+            Assert.IsNotNull(ConfigurationManager.ConnectionStrings["PostgresSQLConnectionString"].ConnectionString);
+        }
     }
 }

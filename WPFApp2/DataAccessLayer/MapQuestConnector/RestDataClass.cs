@@ -128,9 +128,11 @@ namespace TourFinder.DataAccessLayer.MapQuestConnector
 
             //Debug.Print("We do be here though");
             using WebClient client = new();
-            await client.DownloadFileTaskAsync(
+            Debug.WriteLine(String.Format("SAVING IMAGE AT: {0}", fileLocation));
+            Task tmp =  client.DownloadFileTaskAsync(
                 new Uri(mapquestStaticMapUri + key + $"&session={sessionID}&boundingBox={boundingBox}&format=jpg"),
                 fileLocation);
+            tmp.Wait(TimeSpan.FromSeconds(2));
             Debug.WriteLine(String.Format("SAVED IMAGE AT: {0}", fileLocation));
 
             return "map"+fileNameValue+".jpg";

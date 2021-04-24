@@ -9,6 +9,6 @@ namespace TourFinder.DataAccessLayer.DAObject
         //WAS BRAuch ich ALLES UNBEDINGT IM TOUR OBJEKT?
         Tour AddNewTour(string name, string startLocation, string endLocation, float distance, string mapImagePath, string description = null);
         Tour AddNewItem(Tour copyTour);
-        IEnumerable<Tour> GetItems();
+        IEnumerable<Tour> GetTours();
     }
 }

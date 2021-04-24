@@ -3,27 +3,24 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows;
-using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using TourFinder.Models;
-using TourFinder.DataAccessLayer.MapQuestConnector;
-using TourFinder.DataAccessLayer.Common;
+using System.Configuration;
+using TourFinder.BusinessLayer;
 
 namespace TourFinder
 {
     public class MainViewModel : INotifyPropertyChanged
     {
 
-        private static string IMGDIR = "D:\\Documents\\_Mein Stuff\\ProgrammingStuff\\FH_SS2021\\SWEI\\WPFApp2\\WPFApp2\\img\\maps\\";
-        private string _output = "AAAAAAAAA";
+        private static string IMGDIR ;
+        private string _output;
         private string _input;
         private string _imagePath;
         private Tour _selectedTour;
         private Window PopOutWindow;
 
-        private DataLayerAccessManager DLAM = new DataLayerAccessManager();
+        private BusinessLayerManager BLM = new BusinessLayerManager();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -135,6 +132,9 @@ namespace TourFinder
 
         public MainViewModel()
         {
+            IMGDIR = ConfigurationManager.AppSettings["ImageFolder"].ToString();
+
+
             // https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
             this.ExecuteTourListBox = new RelayCommand((_) => Output = TourSelection.Name);
 
@@ -151,13 +151,13 @@ namespace TourFinder
         //TEST
         public void GetAllSavedTours()
         {
-            Tourlist.Add(DLAM.GetToursFromDB()[0]);
+            Tourlist.Add(BLM.GetAllToursFromDB()[0]);
         }
         //TEST
 
         public void AddTour()
         {
-            Tour tmpTour = DLAM.CreateNewTour(TourAddUtilityProperty.Name, TourAddUtilityProperty.StartLocation, TourAddUtilityProperty.EndLocation, TourAddUtilityProperty.Description);
+            Tour tmpTour = BLM.CreateNewTour(TourAddUtilityProperty.Name, TourAddUtilityProperty.StartLocation, TourAddUtilityProperty.EndLocation, TourAddUtilityProperty.Description);
             ImagePath = tmpTour.MapImagePath;
             Tourlist.Add(tmpTour);   
         }

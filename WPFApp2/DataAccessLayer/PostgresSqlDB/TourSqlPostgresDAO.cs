@@ -58,7 +58,7 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
             return tourList.FirstOrDefault();
         }
 
-        public IEnumerable<Tour> GetItems()
+        public IEnumerable<Tour> GetTours()
         {
             DbCommand command = database.CreateCommand(SQL_GET_ALL_ITeMS);
 
