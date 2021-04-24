@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TourFinder
+﻿namespace TourFinder.Models
 {
     public class Log
     {
+        public int ID { get; set; }
+        public Tour Tour { get; set; }
         public string Date { get; set; }
 		public string Report { get; set; }
-		public int Distance { get; set; }
+		public float Distance { get; set; }
         public string Duration { get; set; }
 		public int Rating { get; set;}
 		public int Steps { get; set; }

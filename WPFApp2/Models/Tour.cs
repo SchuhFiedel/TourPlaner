@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TourFinder
+namespace TourFinder.Models
 {
     public class Tour
     {
+        public int ID { get; set; }
         public string Name { get; set; }
         public string StartLocation { get; set; }
         public string EndLocation { get; set; }

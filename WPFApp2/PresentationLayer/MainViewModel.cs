@@ -7,6 +7,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using TourFinder.Models;
+using TourFinder.DataAccessLayer.MapQuestConnector;
+using TourFinder.DataAccessLayer.Common;
 
 namespace TourFinder
 {
@@ -19,6 +22,8 @@ namespace TourFinder
         private string _imagePath;
         private Tour _selectedTour;
         private Window PopOutWindow;
+
+        private DataLayerAccessManager DLAM = new DataLayerAccessManager();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -130,36 +135,31 @@ namespace TourFinder
 
         public MainViewModel()
         {
-            // Alternative: https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
+            // https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
             this.ExecuteTourListBox = new RelayCommand((_) => Output = TourSelection.Name);
-            // this.ExecuteSearch = new RelayCommand((_) => Output = Input);
 
             //execute function with no return value:
             // this.ExecuteSearch = new RelayCommand((_) => GetRouteGetMap());
             this.ExecuteOpenAddWindow = new RelayCommand((_) => OpenAddWindow());
             this.ExecuteDeleteTour = new RelayCommand((_) => DeleteTour());
             this.ExecuteAddTour = new RelayCommand((_) => AddTour());
+
+            //TEST
+            GetAllSavedTours();
         }
 
-        public async void AddTour()
+        //TEST
+        public void GetAllSavedTours()
         {
-            RestDataClass rb = RestDataClass.Instance();
-            string returnValue = await rb.GetRouteSaveImg(TourAddUtilityProperty.StartLocation, TourAddUtilityProperty.EndLocation);
-            string[] pathAndDist = returnValue.Split("::");
-            TourAddUtilityProperty.ImagePath = pathAndDist[0];
-            TourAddUtilityProperty.Distance = float.Parse(pathAndDist[1]);
-            ImagePath = TourAddUtilityProperty.ImagePath;
+            Tourlist.Add(DLAM.GetToursFromDB()[0]);
+        }
+        //TEST
 
-            this.Tourlist.Add(new Tour()
-            {
-                Name = TourAddUtilityProperty.Name,
-                StartLocation = TourAddUtilityProperty.StartLocation,
-                EndLocation = TourAddUtilityProperty.EndLocation,
-                Description = TourAddUtilityProperty.Description,
-                MapImagePath = TourAddUtilityProperty.ImagePath,
-                Distance = TourAddUtilityProperty.Distance
-            }
-            );
+        public void AddTour()
+        {
+            Tour tmpTour = DLAM.CreateNewTour(TourAddUtilityProperty.Name, TourAddUtilityProperty.StartLocation, TourAddUtilityProperty.EndLocation, TourAddUtilityProperty.Description);
+            ImagePath = tmpTour.MapImagePath;
+            Tourlist.Add(tmpTour);   
         }
 
         public void DeleteTour()

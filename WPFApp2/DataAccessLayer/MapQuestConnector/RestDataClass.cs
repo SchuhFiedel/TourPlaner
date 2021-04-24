@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -8,19 +6,23 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Net;
+using System.Configuration;
+using TourFinder.DataAccessLayer.Common;
 
 //How to use HTTPClient https://zetcode.com/csharp/httpclient/
 
-namespace TourFinder
+namespace TourFinder.DataAccessLayer.MapQuestConnector
 {
-    class RestDataClass
+    class RestDataClass : IMapQuestAccess
     {
         private static RestDataClass instance = null;
         private static HttpClient httpClient = null;
-        private static string key = "RtfQrP95xMphxahgFEmU8ZQkHBQfC4eu";
+        //private static string key = "RtfQrP95xMphxahgFEmU8ZQkHBQfC4eu";
+        
         private static string mapquestDirectionsUri = "http://www.mapquestapi.com/directions/v2/route?key=";
         private static string mapquestStaticMapUri = "http://www.mapquestapi.com/staticmap/v5/map?key=";
-        private static string internalPath = "D:\\Documents\\_Mein Stuff\\ProgrammingStuff\\FH_SS2021\\SWEI\\WPFApp2\\WPFApp2\\img\\maps";
+        private static string internalPath;
+        private static string key;
 
         public static RestDataClass Instance()
         {
@@ -37,7 +39,8 @@ namespace TourFinder
             if(httpClient == null)
             {
                 httpClient = new HttpClient();
-                
+                internalPath = ConfigurationManager.AppSettings["ImageFolder"];
+                key = ConfigurationManager.AppSettings["MapQuestAPIKey"];
             }
         }
 
@@ -46,8 +49,8 @@ namespace TourFinder
         /// </summary>
         /// <param name="startLocation"></param>
         /// <param name="endLocation"></param>
-        /// <returns><string>newImageLocation</string></returns>
-        public async Task<string> GetRouteSaveImg(string startLocation, string endLocation)
+        /// <returns><string>newImageLocation</string>, <string>Distance</string></returns>
+        public async Task<Tuple<string, float>> GetRouteSaveImg(string startLocation, string endLocation)
         {
             try {
                 string respBody = httpClient
@@ -66,7 +69,7 @@ namespace TourFinder
                 string lr_lat = (string)mapData["route"]["boundingBox"]["lr"]["lat"].ToString().Replace(",", ".");
                 string lr_lng = (string)mapData["route"]["boundingBox"]["lr"]["lng"].ToString().Replace(",", ".");
 
-                string distance = (string)mapData["route"]["distance"].ToString();
+                float distance = float.Parse(mapData["route"]["distance"].ToString());
 
                 string sessionId = (string)mapData["route"]["sessionId"].ToString();
 
@@ -74,13 +77,13 @@ namespace TourFinder
 
                 string saveImgPath = await GetAndSaveImage(boundingBox, sessionId);
 
-                return saveImgPath + "::" + distance;
+                return new Tuple<string, float>(saveImgPath, distance);
             }
             catch (HttpRequestException e)
             {
                 Debug.WriteLine("Exception Caught!!");
                 Debug.WriteLine("Message :{0} ", e.Message);
-                return e.Message;
+                return new Tuple<string,float>(e.Message,0);
             }
         }
 
@@ -128,6 +131,7 @@ namespace TourFinder
             await client.DownloadFileTaskAsync(
                 new Uri(mapquestStaticMapUri + key + $"&session={sessionID}&boundingBox={boundingBox}&format=jpg"),
                 fileLocation);
+            Debug.WriteLine(String.Format("SAVED IMAGE AT: {0}", fileLocation));
 
             return "map"+fileNameValue+".jpg";
         }
