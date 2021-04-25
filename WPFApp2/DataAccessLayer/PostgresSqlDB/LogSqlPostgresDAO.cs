@@ -25,9 +25,9 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
             this.tourDAO = tourDAO;
         }
 
-        public Log AddNewItemLog(Tour tour, string date, string report = null, int? distance = null, 
-                                 string duration = null, int? rating = null, int? steps = null, float? weightkg = null,
-                                 string bloodpreassure = null, string feeling = null, string weather = null)
+        public Log AddNewItemLog(Tour tour, string date, string report = "\"\"", int distance = 0, string duration = "\"\"", 
+                                int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "\"\"",
+                                string feeling = "\"\"", string weather = "\"\"")
         {
             DbCommand command = database.CreateCommand(SQL_INSERT_NEW_LOG);
             database.DefineParameter<int>(command, "@tourid", DbType.Int32, tour.ID);

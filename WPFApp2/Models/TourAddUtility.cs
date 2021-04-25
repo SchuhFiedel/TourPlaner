@@ -15,7 +15,7 @@ namespace TourFinder.Models
         string _Name;
         string _StartLocation;
         string _EndLocation;
-        string _Description;
+        string _Description = " ";
         string _ImagePath;
         float _Distance;
 
@@ -60,12 +60,13 @@ namespace TourFinder.Models
                 }
             } 
         }
-        public string Description { 
-            get 
+        public string Description 
+        {
+            get
             {
                 return this._Description;
-            } 
-            set 
+            }
+            set
             {
                 if (this._Description != value)
                 {
@@ -73,7 +74,7 @@ namespace TourFinder.Models
                     OnPropertyChanged(nameof(Description));
                 }
             }
-        }
+        } 
         public string ImagePath { 
             get 
             {

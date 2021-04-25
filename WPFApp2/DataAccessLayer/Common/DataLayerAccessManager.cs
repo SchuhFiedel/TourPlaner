@@ -24,7 +24,7 @@ namespace TourFinder.DataAccessLayer.Common
             mapQuest = RestDataClass.Instance();
         }
 
-        public Tour CreateNewTour(string name, string startLocation, string endLocation, string description = null)
+        public Tour CreateNewTour(string name, string startLocation, string endLocation, string description = "")
         {
             Task<Tuple<string,float>> tmpTask =  mapQuest.GetRouteSaveImg(startLocation, endLocation);
             Task.WaitAll(tmpTask);
@@ -37,13 +37,13 @@ namespace TourFinder.DataAccessLayer.Common
             return tourDAO.AddNewTour(name, startLocation, endLocation, distance, mapImagePath, description);
         }
 
-        public List<Log> CreateNewLogAndRefreshTourLogList(Tour tour, string date, string report = null, int? distance = null, string druration = null, int? rating = null, int? steps = null, float? weightkg = null, string bloodpreassure = null, string feeling = null, string weather = null)
+        public List<Log> CreateNewLogAndRefreshTourLogList(Tour tour, string date, string report = "", int distance = 0, string duration = "", int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "", string feeling = "", string weather = "")
         {
-            logDAO.AddNewItemLog(tour, date, report, distance, druration, rating, steps, weightkg, bloodpreassure, feeling, weather);
+            logDAO.AddNewItemLog(tour, date, report, distance, duration, rating, steps, weightkg, bloodpreassure, feeling, weather);
             return (List<Log>)logDAO.GetLogsOfTour(tour);
         }
 
-        public List<Log> UpdateLogAndRefreshTourLogList(Log oldLog, string date = null, string report = null, int? distance = null, string druration = null, int? rating = null, int? steps = null, float? weightkg = null, string bloodpreassure = null, string feeling = null, string weather = null)
+        public List<Log> UpdateLogAndRefreshTourLogList(Log oldLog, string date = "", string report = "", int distance = 0, string duration = "", int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "", string feeling = "", string weather = "")
         {
             throw new NotImplementedException();
            // return new List<Log>();

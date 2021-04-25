@@ -145,11 +145,11 @@ namespace TourFinder
             this.ExecuteDeleteTour = new RelayCommand((_) => DeleteTour());
             this.ExecuteAddTour = new RelayCommand((_) => AddTour());
 
-            //TEST
+            //To initialize list with saved tours
             GetAllSavedTours();
         }
 
-        //TEST
+        
         public void GetAllSavedTours()
         {
             List<Tour> tmplist = BLM.GetAllToursFromDB();
@@ -158,13 +158,13 @@ namespace TourFinder
                 Tourlist.Add(tour);
             }
         }
-        //TEST
 
         public void AddTour()
         {
             Tour tmpTour = BLM.CreateNewTour(TourAddUtilityProperty.Name, TourAddUtilityProperty.StartLocation, TourAddUtilityProperty.EndLocation, TourAddUtilityProperty.Description);
             ImagePath = tmpTour.MapImagePath;
-            Tourlist.Add(tmpTour);   
+            Tourlist.Add(tmpTour);
+            PopOutWindow.Close();
         }
 
         public void DeleteTour()
@@ -177,6 +177,7 @@ namespace TourFinder
                                              "\n" + TourAddUtilityProperty.StartLocation + 
                                              "\n" + TourAddUtilityProperty.EndLocation);
             }
+            GetAllSavedTours();
         }
 
         public void OpenAddWindow()

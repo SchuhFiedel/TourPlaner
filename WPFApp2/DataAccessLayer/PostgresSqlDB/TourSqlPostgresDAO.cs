@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using TourFinder.DataAccessLayer.Common;
 using TourFinder.DataAccessLayer.DAObject;
@@ -23,16 +24,16 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
         {
             this.database = database;
         }
-        public Tour AddNewTour(string name, string startLocation, string endLocation, float distance, string mapImagePath, string description = null)
+        public Tour AddNewTour(string name, string startLocation, string endLocation, float distance, string mapImagePath, string description = "\"\"")
         {
             DbCommand command = database.CreateCommand(SQL_INSTERT_NEW_ITEM);
             database.DefineParameter<string>(command, "@name", DbType.String , name);
             database.DefineParameter<string>(command, "@startlocation", DbType.String, startLocation);
             database.DefineParameter<string>(command, "@endlocation", DbType.String, endLocation);
             database.DefineParameter<float>(command, "@distance", DbType.Decimal, distance);
-            database.DefineParameter<string>(command, "@description", DbType.String, description);
             database.DefineParameter<string>(command, "@mapimagepath", DbType.String, mapImagePath);
-
+            database.DefineParameter<string>(command, "@description", DbType.String, description);
+            Debug.WriteLine("Parameters Defined!");
             return FindByID(database.ExecuteScalar(command));
         }
 
