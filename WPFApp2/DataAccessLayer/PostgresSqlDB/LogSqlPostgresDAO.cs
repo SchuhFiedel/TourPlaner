@@ -31,16 +31,16 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
         {
             DbCommand command = database.CreateCommand(SQL_INSERT_NEW_LOG);
             database.DefineParameter<int>(command, "@tourid", DbType.Int32, tour.ID);
-            database.DefineParameter<string>(command, "@tourid", DbType.String, date);
-            database.DefineParameter<string>(command, "@tourid", DbType.String, report);
-            database.DefineParameter<int?>(command, "@tourid", DbType.Int32, distance);
-            database.DefineParameter<string>(command, "@tourid", DbType.String, duration);
-            database.DefineParameter<int?>(command, "@tourid", DbType.Int32, rating);
-            database.DefineParameter<int?>(command, "@tourid", DbType.Int32, steps);
-            database.DefineParameter<float?>(command, "@tourid", DbType.Decimal, weightkg);
-            database.DefineParameter<string>(command, "@tourid", DbType.String, bloodpreassure);
-            database.DefineParameter<string>(command, "@tourid", DbType.String, feeling);
-            database.DefineParameter<string>(command, "@tourid", DbType.String, weather);
+            database.DefineParameter<string>(command, "@date", DbType.String, date);
+            database.DefineParameter<string>(command, "@report", DbType.String, report);
+            database.DefineParameter<int?>(command, "@distance", DbType.Int32, distance);
+            database.DefineParameter<string>(command, "@duration", DbType.String, duration);
+            database.DefineParameter<int?>(command, "@rating", DbType.Int32, rating);
+            database.DefineParameter<int?>(command, "@steps", DbType.Int32, steps);
+            database.DefineParameter<float?>(command, "@weightkg", DbType.Decimal, weightkg);
+            database.DefineParameter<string>(command, "@bloodpreassure", DbType.String, bloodpreassure);
+            database.DefineParameter<string>(command, "@feeling", DbType.String, feeling);
+            database.DefineParameter<string>(command, "@weather", DbType.String, weather);
 
             return FindById(database.ExecuteScalar(command));
         }

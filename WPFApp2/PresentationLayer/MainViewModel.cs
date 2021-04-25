@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using TourFinder.Models;
 using System.Configuration;
 using TourFinder.BusinessLayer;
+using System.Collections.Generic;
 
 namespace TourFinder
 {
@@ -151,7 +152,11 @@ namespace TourFinder
         //TEST
         public void GetAllSavedTours()
         {
-            Tourlist.Add(BLM.GetAllToursFromDB()[0]);
+            List<Tour> tmplist = BLM.GetAllToursFromDB();
+            foreach (Tour tour in tmplist)
+            {
+                Tourlist.Add(tour);
+            }
         }
         //TEST
 
