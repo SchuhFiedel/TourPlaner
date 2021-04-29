@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace TourFinder.Models
 {
-    public class TourAddUtility : INotifyPropertyChanged
+    public class TourAddUtility 
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         string _Name;
         string _StartLocation;
         string _EndLocation;
@@ -28,7 +27,6 @@ namespace TourFinder.Models
                 if(this._Name != value)
                 {
                     this._Name = value;
-                    OnPropertyChanged(nameof(Name));
                 }
             }
         }
@@ -42,7 +40,6 @@ namespace TourFinder.Models
                 if(this._StartLocation != value)
                 {
                     this._StartLocation = value;
-                    OnPropertyChanged(nameof(StartLocation));
                 }
             }
         }
@@ -56,7 +53,6 @@ namespace TourFinder.Models
                 if(this._EndLocation != value)
                 {
                     this._EndLocation = value;
-                    OnPropertyChanged(nameof(EndLocation));
                 }
             } 
         }
@@ -71,7 +67,6 @@ namespace TourFinder.Models
                 if (this._Description != value)
                 {
                     this._Description = value;
-                    OnPropertyChanged(nameof(Description));
                 }
             }
         } 
@@ -85,7 +80,6 @@ namespace TourFinder.Models
                 if (_ImagePath != value)
                 {
                     this._ImagePath = value;
-                    OnPropertyChanged(nameof(ImagePath));
                 }
             }
         }
@@ -99,15 +93,8 @@ namespace TourFinder.Models
                 if (_Distance != value) 
                 {
                     this._Distance = value;
-                    OnPropertyChanged(nameof(Distance));
                 }
             }
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            Debug.Print($"propertyChanged \"{propertyName}\"");
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

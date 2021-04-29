@@ -7,7 +7,7 @@ namespace TourFinder.BusinessLayer
 {
     class BusinessLayerManager
     {
-        DataLayerAccessManager DLAM = new DataLayerAccessManager();
+        DataLayerAccessManager DLAM = DataLayerAccessManager.GetInstance();
 
         public Tour CreateNewTour(string name, string startLocation, string endLocation, string description = null)
         {
@@ -16,7 +16,7 @@ namespace TourFinder.BusinessLayer
 
         public List<Tour> GetAllToursFromDB()
         {
-            return DLAM.GetToursFromDB();
+            return (List<Tour>)DLAM.GetToursFromDB();
         }
 
         public List<Log> CreateNewLogAndRefreshTourLogList()
@@ -30,5 +30,14 @@ namespace TourFinder.BusinessLayer
         }
 
 
+        public void ExportToursToJSON(List<Tour> tourlist)
+        {
+            DLAM.ExportToursToJSONFile(tourlist);
+        }
+
+        public List<Tour> ImportToursFromJSON()
+        {
+            return (List<Tour>)DLAM.ImportToursFromJSONFile();
+        }
     }
 }

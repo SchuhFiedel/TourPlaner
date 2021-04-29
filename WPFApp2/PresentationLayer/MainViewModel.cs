@@ -8,6 +8,7 @@ using TourFinder.Models;
 using System.Configuration;
 using TourFinder.BusinessLayer;
 using System.Collections.Generic;
+using System;
 
 namespace TourFinder
 {
@@ -25,9 +26,10 @@ namespace TourFinder
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        //Commands
         public ICommand ExecuteSearch { get; }
         public ICommand ExecuteTourListBox { get; }
-        public ICommand ExecuteOpenAddWindow { get; }
+        public ICommand ExecuteOpenAddWindow { get; } 
         public ICommand ExecuteDeleteTour { get; }
         public ICommand ExecuteAddTour { get; }
         
@@ -48,6 +50,8 @@ namespace TourFinder
             },
             new Tour() { Name = "Tour3" , Description = "Not nice", MapImagePath = "map2.jpg"}
         };
+
+
         public ObservableCollection<Log> DataGridLogList { get; set; } = new ObservableCollection<Log>();
         public Tour TourSelection
         {
@@ -140,23 +144,19 @@ namespace TourFinder
             this.ExecuteTourListBox = new RelayCommand((_) => Output = TourSelection.Name);
 
             //execute function with no return value:
-            // this.ExecuteSearch = new RelayCommand((_) => GetRouteGetMap());
+            //this.ExecuteSearch = new RelayCommand((_) => GetRouteGetMap());
             this.ExecuteOpenAddWindow = new RelayCommand((_) => OpenAddWindow());
             this.ExecuteDeleteTour = new RelayCommand((_) => DeleteTour());
             this.ExecuteAddTour = new RelayCommand((_) => AddTour());
 
-            //To initialize list with saved tours
-            GetAllSavedTours();
+            //To fill list with saved tours from DataLayer
+            FillTourList();
         }
 
         
-        public void GetAllSavedTours()
+        public void FillTourList()
         {
-            List<Tour> tmplist = BLM.GetAllToursFromDB();
-            foreach (Tour tour in tmplist)
-            {
-                Tourlist.Add(tour);
-            }
+            Tourlist = new ObservableCollection<Tour>(BLM.GetAllToursFromDB());
         }
 
         public void AddTour()
@@ -167,18 +167,26 @@ namespace TourFinder
             PopOutWindow.Close();
         }
 
+        public void CopyTour()
+        {
+            throw new NotImplementedException();
+        }
+
         public void DeleteTour()
         {
+            throw new NotImplementedException();
 // TO-DO
             if(TourSelection != null)
             {
-                MessageBox.Show("DELETE TOUR: \n" + TourAddUtilityProperty.Name + 
-                                             "\n" + TourAddUtilityProperty.Description + 
-                                             "\n" + TourAddUtilityProperty.StartLocation + 
-                                             "\n" + TourAddUtilityProperty.EndLocation);
+                MessageBox.Show("DELETE TOUR: \n" + TourSelection.Name + 
+                                             "\n" + TourSelection.Description + 
+                                             "\n" + TourSelection.StartLocation + 
+                                             "\n" + TourSelection.EndLocation);
             }
-            GetAllSavedTours();
+            FillTourList();
         }
+
+
 
         public void OpenAddWindow()
         {

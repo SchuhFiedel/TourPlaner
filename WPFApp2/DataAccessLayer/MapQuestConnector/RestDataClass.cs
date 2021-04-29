@@ -50,7 +50,7 @@ namespace TourFinder.DataAccessLayer.MapQuestConnector
         /// <param name="startLocation"></param>
         /// <param name="endLocation"></param>
         /// <returns><string>newImageLocation</string>, <string>Distance</string></returns>
-        public async Task<Tuple<string, float>> GetRouteSaveImg(string startLocation, string endLocation)
+        public Tuple<string, float> GetRouteSaveImg(string startLocation, string endLocation)
         {
             try {
                 string respBody = httpClient
@@ -75,7 +75,7 @@ namespace TourFinder.DataAccessLayer.MapQuestConnector
 
                 string boundingBox = ul_lat + "," + ul_lng + "," + lr_lat + "," + lr_lng;
 
-                string saveImgPath = await GetAndSaveImage(boundingBox, sessionId);
+                string saveImgPath = GetAndSaveImage(boundingBox, sessionId);
 
                 return new Tuple<string, float>(saveImgPath, distance);
             }
@@ -93,7 +93,7 @@ namespace TourFinder.DataAccessLayer.MapQuestConnector
         /// <param name="boundingBox"></param>
         /// <param name="sessionID"></param>
         /// <returns><string>newImageLocation</string></returns>
-        private async Task<string> GetAndSaveImage(string boundingBox, string sessionID)
+        private string GetAndSaveImage(string boundingBox, string sessionID)
         {
             System.IO.Directory.CreateDirectory(internalPath);
 
@@ -132,6 +132,7 @@ namespace TourFinder.DataAccessLayer.MapQuestConnector
             Task tmp =  client.DownloadFileTaskAsync(
                 new Uri(mapquestStaticMapUri + key + $"&session={sessionID}&boundingBox={boundingBox}&format=jpg"),
                 fileLocation);
+
             tmp.Wait(TimeSpan.FromSeconds(2));
             Debug.WriteLine(String.Format("SAVED IMAGE AT: {0}", fileLocation));
 

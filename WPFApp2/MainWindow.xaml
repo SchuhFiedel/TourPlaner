@@ -60,9 +60,12 @@
                 <MenuItem Header="Tours" IsEnabled="False"/>
                 <MenuItem Header="_New" 
                           Command="{Binding ExecuteOpenAddWindow}"/>
-                <MenuItem Header="_Del"
+                <MenuItem Header="_Delete"
                           Command="{Binding ExecuteDeleteTour}"/>
-                <MenuItem Header="_Ref"/>
+                <MenuItem Header="_Update"
+                          Command="{Binding ExecuteUpdateTour}"/>
+                <MenuItem Header="_Copy"
+                          Command="{Binding ExecuteCopyTour}"/>
             </Menu>
 
             <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Tourlist}" SelectedItem="{Binding TourSelection, UpdateSourceTrigger=PropertyChanged}">

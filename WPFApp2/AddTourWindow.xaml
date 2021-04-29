@@ -7,10 +7,6 @@
         mc:Ignorable="d"
         Title="AddTourWindow" Height="450" Width="800">
 
-    <Window.DataContext>
-        <local:MainViewModel/>
-    </Window.DataContext>
-
     <Grid RenderTransformOrigin="0.0,0.0">
         <!--#region Definitions-->
         <Grid.RowDefinitions>

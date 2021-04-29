@@ -8,6 +8,6 @@ namespace TourFinder.DataAccessLayer.Common
 {
     interface IMapQuestAccess
     {
-        public Task<Tuple<string,float>> GetRouteSaveImg(string startLocation, string endLocation);
+        public Tuple<string,float> GetRouteSaveImg(string startLocation, string endLocation);
     }
 }

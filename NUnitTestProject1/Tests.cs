@@ -25,7 +25,7 @@ namespace NUnitTestProject1
         [Test]
         public void DataLayerAccessManagerTest ()
         {
-            DataLayerAccessManager DLAM = new DataLayerAccessManager();
+            DataLayerAccessManager DLAM = DataLayerAccessManager.GetInstance();
             //Debug.WriteLine(DLAM.GetToursFromDB().ToString());
             Assert.IsNotNull(DLAM);
         }
