@@ -16,4 +16,17 @@
     <Folder Include="img\maps\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="UpdateTourWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="UpdateTourWindow.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>

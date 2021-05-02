@@ -37,6 +37,13 @@ namespace TourFinder.DataAccessLayer.Common
             return instance;
         }
 
+        public IEnumerable<Tour> GetToursFromDB()
+        {
+            Debug.WriteLine("GET ALL TOURS FROM DB");
+            return (List<Tour>)tourDAO.GetTours();
+        }
+
+        //CREATE
         public Tour CreateNewTour(string name, string startLocation, string endLocation, string description = "")
         {
             Tuple<string, float> tmpTuple = mapQuest.GetRouteSaveImg(startLocation, endLocation);
@@ -56,6 +63,7 @@ namespace TourFinder.DataAccessLayer.Common
             return (List<Log>)logDAO.GetLogsOfTour(tour);
         }
 
+        //UPDATE
         public IEnumerable<Log> UpdateLogAndRefreshTourLogList(Log oldLog, string date = "", string report = "", int distance = 0, string duration = "", 
                                                         int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "", 
                                                         string feeling = "", string weather = "")
@@ -64,17 +72,48 @@ namespace TourFinder.DataAccessLayer.Common
            // return new List<Log>();
         }
 
-        public IEnumerable<Tour> GetToursFromDB()
+        public IEnumerable<Tour> UpdateTourAndRefreshTourList(Tour tour, string name = null, string description = null)
         {
-            Debug.WriteLine("GET ALL TOURS FROM DB");
-            return (List<Tour>)tourDAO.GetTours();
+            if(name == null && tour.Name == name)
+            {
+                name = tour.Name;
+            }
+            if(description == null && tour.Description == description)
+            {
+                description = tour.Description;
+            }
+
+            tourDAO.UpdateTour(tour.ID, name, description);
+            return tourDAO.GetTours(); 
         }
 
-        public IEnumerable<Log> DeleteLogAndRefreshTourLogList()
+        //COPY
+        public IEnumerable<Log> CopyLogAndRefreshTourLogList(Log oldLog)
         {
-            throw new NotImplementedException();
+            logDAO.CopyLog(oldLog);
+            return logDAO.GetLogsOfTour(oldLog.Tour);
         }
 
+        public IEnumerable<Tour> CopyTourAndRefreshTourList(Tour oldTour)
+        {
+            tourDAO.CopyTour(oldTour);
+            return tourDAO.GetTours();
+        }
+
+        //DELETE 
+        public IEnumerable<Log> DeleteLogAndRefreshTourLogList(Log oldlog)
+        {
+            logDAO.DeleteLog(oldlog);
+            return logDAO.GetLogsOfTour(oldlog.Tour);
+        }
+
+        public IEnumerable<Tour> DeleteTourAndRefreshTourList(Tour oldTour)
+        {
+            tourDAO.DeleteTour(oldTour);
+            return tourDAO.GetTours();
+        }
+
+        //IMPORT EXPORT
         public IEnumerable<Tour> ImportToursFromJSONFile()
         {
             return fileManager.ImportToursFromFile();

@@ -9,27 +9,64 @@ namespace TourFinder.BusinessLayer
     {
         DataLayerAccessManager DLAM = DataLayerAccessManager.GetInstance();
 
-        public Tour CreateNewTour(string name, string startLocation, string endLocation, string description = null)
-        {
-            return DLAM.CreateNewTour(name, startLocation, endLocation, description);
-        }
-
         public List<Tour> GetAllToursFromDB()
         {
             return (List<Tour>)DLAM.GetToursFromDB();
         }
 
-        public List<Log> CreateNewLogAndRefreshTourLogList()
+
+        //CREATE TOUR, LOG
+        public Tour CreateNewTour(string name, string startLocation, string endLocation, string description = null)
         {
-            throw new NotImplementedException();
+            if (description == null) description = "";
+            return DLAM.CreateNewTour(name, startLocation, endLocation, description);
         }
 
-        public List<Log> DeleteLogGetList()
+        public List<Log> CreateNewLogGetLogList(Tour tour, string date, string report = "", int distance = 0, string duration = "",
+                                                            int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "",
+                                                            string feeling = "", string weather = "")
         {
-            throw new NotImplementedException();
+            return (List<Log>)DLAM.CreateNewLogAndRefreshTourLogList(tour, date, report, distance, duration,rating, steps, weightkg,bloodpreassure,feeling,weather);
+        }
+
+        //UPDATE
+        public List<Tour> UpdateTourGetList(Tour tour, string name = null, string description = null)
+        {
+            return (List<Tour>)DLAM.UpdateTourAndRefreshTourList(tour, name, description);
+        }
+
+        public List<Log> UpdateLogGetList(Log log, string date, string report = "", int distance = 0, string duration = "",
+                                                            int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "",
+                                                            string feeling = "", string weather = "")
+        {
+            return (List<Log>)DLAM.UpdateLogAndRefreshTourLogList(log, date, report, distance, duration, rating, steps, weightkg, bloodpreassure, feeling, weather);
+        }
+
+        //DELETE TOUR, LOG
+        public List<Log> DeleteLogGetList(Log log)
+        {
+            return (List<Log>)DLAM.DeleteLogAndRefreshTourLogList(log);
+        }
+
+        public List<Tour> DeleteTourGetList(Tour tour)
+        {
+            return (List<Tour>)DLAM.DeleteTourAndRefreshTourList(tour);
+        }
+
+        //COPY
+        public List<Log> CopyLogGetList(Log log)
+        {
+            return (List<Log>)DLAM.CopyLogAndRefreshTourLogList(log);
+        }
+
+        public List<Tour> CopyTourGetList(Tour tour)
+        {
+            return (List<Tour>)DLAM.CopyTourAndRefreshTourList(tour);
         }
 
 
+
+        //EXPORT INPORT
         public void ExportToursToJSON(List<Tour> tourlist)
         {
             DLAM.ExportToursToJSONFile(tourlist);

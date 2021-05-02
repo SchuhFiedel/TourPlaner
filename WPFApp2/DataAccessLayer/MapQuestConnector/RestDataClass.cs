@@ -54,7 +54,7 @@ namespace TourFinder.DataAccessLayer.MapQuestConnector
         {
             try {
                 string respBody = httpClient
-                                    .GetStringAsync(mapquestDirectionsUri + key + "&from="+startLocation + "&to="+endLocation)
+                                    .GetStringAsync(mapquestDirectionsUri + key + "&from=" + startLocation + "&to=" + endLocation + "&routeType=bicycle&unity=k")
                                     .Result;
                 //httpClient.GetByteArrayAsync();
 

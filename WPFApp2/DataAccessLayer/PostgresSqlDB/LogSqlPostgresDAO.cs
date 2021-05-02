@@ -89,5 +89,20 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
             }
             return loglist;
         }
+
+        public int CopyLog(Log oldLog)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public int DeleteLog(Log oldLog)
+        {
+            throw new System.NotImplementedException();
+        }
+        public int UpdateLog()
+        {
+            throw new System.NotImplementedException();
+        }
+
     }
 }

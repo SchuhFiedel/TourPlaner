@@ -93,7 +93,22 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
                 }
             }
 
-                return tourList;
+        return tourList;
+        }
+
+        public int UpdateTour(int tourid, string newName, string newDescription)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int CopyTour(Tour oldTour)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int DeleteTour(Tour oldTour)
+        {
+            throw new NotImplementedException();
         }
     }
 }

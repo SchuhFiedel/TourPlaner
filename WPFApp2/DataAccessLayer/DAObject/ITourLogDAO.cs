@@ -10,5 +10,9 @@ namespace TourFinder.DataAccessLayer.DAObject
                             int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "\"\"", 
                             string feeling = "\"\"", string weather = "\"\"");
         IEnumerable<Log> GetLogsOfTour(Tour tour);
+        int UpdateLog();
+        int CopyLog(Log oldLog);
+        int DeleteLog(Log oldLog);
+
     }
 }

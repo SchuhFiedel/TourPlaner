@@ -59,11 +59,11 @@
             <Menu DockPanel.Dock="Top" VerticalAlignment="Top" Name="Tours">
                 <MenuItem Header="Tours" IsEnabled="False"/>
                 <MenuItem Header="_New" 
-                          Command="{Binding ExecuteOpenAddWindow}"/>
+                          Command="{Binding ExecuteOpenAddTourWindow}"/>
                 <MenuItem Header="_Delete"
                           Command="{Binding ExecuteDeleteTour}"/>
                 <MenuItem Header="_Update"
-                          Command="{Binding ExecuteUpdateTour}"/>
+                          Command="{Binding ExecuteOpenTourUpdateWindow}"/>
                 <MenuItem Header="_Copy"
                           Command="{Binding ExecuteCopyTour}"/>
             </Menu>
@@ -84,7 +84,7 @@
                 <Image  Name="ImageViewer"  Margin="5" Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}"/>
             </TabItem>
             <TabItem Header="Description">
-                <Label Content="{Binding Output, UpdateSourceTrigger=PropertyChanged}"></Label>
+                <Label Content="{Binding Description, UpdateSourceTrigger=PropertyChanged}"></Label>
             </TabItem>
         </TabControl>
 
