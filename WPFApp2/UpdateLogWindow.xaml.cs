@@ -17,16 +17,11 @@ namespace TourFinder
     /// <summary>
     /// Interaktionslogik für AddTourWindow.xaml
     /// </summary>
-    public partial class UpdateTourWindow : Window
+    public partial class UpdateLogWindow : Window
     {
-        public UpdateTourWindow()
+        public UpdateLogWindow()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

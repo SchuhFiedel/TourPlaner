@@ -60,12 +60,12 @@
                 <MenuItem Header="Tours" IsEnabled="False"/>
                 <MenuItem Header="_New" 
                           Command="{Binding ExecuteOpenAddTourWindow}"/>
-                <MenuItem Header="_Delete"
-                          Command="{Binding ExecuteDeleteTour}"/>
                 <MenuItem Header="_Update"
                           Command="{Binding ExecuteOpenTourUpdateWindow}"/>
                 <MenuItem Header="_Copy"
                           Command="{Binding ExecuteCopyTour}"/>
+                <MenuItem Header="_Delete"
+                          Command="{Binding ExecuteDeleteTour}"/>
             </Menu>
 
             <ListBox DockPanel.Dock="Top" ItemsSource="{Binding Tourlist}" SelectedItem="{Binding TourSelection, UpdateSourceTrigger=PropertyChanged}">
@@ -81,7 +81,7 @@
         <!--#region Main Section-->
         <TabControl Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2">
             <TabItem Header="Route">
-                <Image  Name="ImageViewer"  Margin="5" Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}"/>
+                <Image  Name="ImageViewer"  Margin="5" Source="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}" Stretch="Uniform"/>
             </TabItem>
             <TabItem Header="Description">
                 <Label Content="{Binding Description, UpdateSourceTrigger=PropertyChanged}"></Label>
@@ -91,12 +91,27 @@
         <DockPanel Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem IsEnabled="False" Header="Logs:"></MenuItem>
-                <MenuItem Header="New"></MenuItem>
-                <MenuItem Header="Delete"></MenuItem>
+                <MenuItem Header="New" Command="{Binding ExecuteOpenAddLogWindow}"></MenuItem>
+                <MenuItem Header="Update" Command="{Binding ExecuteOpenUpdateLogWindow}"></MenuItem>
+                <MenuItem Header="Copy" Command="{Binding ExecuteCopyLog}"></MenuItem>
+                <MenuItem Header="Delete" Command="{Binding ExecuteDeleteLog}"></MenuItem>
             </Menu>
 
-            <DataGrid HeadersVisibility="Column" AutoGenerateColumns="true" Name="DataGrid" DockPanel.Dock="Top" ItemsSource="{Binding DataGridLogList, UpdateSourceTrigger=PropertyChanged}">
+            <DataGrid HeadersVisibility="Column" AutoGenerateColumns="False" Name="DataGrid" 
+                      DockPanel.Dock="Top" IsReadOnly="True" SelectedItem="{Binding LogSelection, UpdateSourceTrigger=PropertyChanged}" SelectionUnit="FullRow"
+                      ItemsSource="{Binding DataGridLogList, UpdateSourceTrigger=PropertyChanged}">
                 <DataGrid.Columns>
+                    <!--<DataGridTextColumn Binding="{Binding ID}" Header="ID"></DataGridTextColumn>-->
+                    <DataGridTextColumn Binding="{Binding Date}" Header="Date"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Report}" Header="Report"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Distance}" Header="Distance"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Duration}" Header="Duration"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Rating}" Header="Rating"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Steps}" Header="Steps"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding WeightKG}" Header="WeightKG"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding BloodPreassure}" Header="BloodPreassure"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Feeling}" Header="Feeling"></DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Weather}" Header="Weather"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </DockPanel>

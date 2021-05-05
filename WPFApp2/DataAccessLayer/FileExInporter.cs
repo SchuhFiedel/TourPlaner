@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,25 @@ namespace TourFinder.DataAccessLayer.FileSystem
         public void ExportToursToFile(IEnumerable<Tour> tourList)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<string> GetAllImagesFromFolder()
+        {
+            List<string> allFiles = new List<string>();
+
+            DirectoryInfo d = new DirectoryInfo(ConfigurationManager.AppSettings["ImageFolder"]);
+            FileInfo[] files = d.GetFiles("*jpg");
+            foreach (var file in files)
+            {
+                allFiles.Add(file.Name);
+            }
+            return allFiles;
+        }
+
+        public void DeleteImage(string image)
+        {
+            string path = ConfigurationManager.AppSettings["ImageFolder"] + image;
+            File.Delete(path);
         }
     }
 }

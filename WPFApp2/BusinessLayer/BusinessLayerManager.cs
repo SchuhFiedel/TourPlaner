@@ -22,9 +22,9 @@ namespace TourFinder.BusinessLayer
             return DLAM.CreateNewTour(name, startLocation, endLocation, description);
         }
 
-        public List<Log> CreateNewLogGetLogList(Tour tour, string date, string report = "", int distance = 0, string duration = "",
-                                                            int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "",
-                                                            string feeling = "", string weather = "")
+        public List<Log> CreateNewLogGetLogList(Tour tour, string date, string report = "\"\"", int distance = 0, string duration = "\"\"",
+                                                            int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "\"\"",
+                                                            string feeling = "\"\"", string weather = "\"\"")
         {
             return (List<Log>)DLAM.CreateNewLogAndRefreshTourLogList(tour, date, report, distance, duration,rating, steps, weightkg,bloodpreassure,feeling,weather);
         }
@@ -39,7 +39,7 @@ namespace TourFinder.BusinessLayer
                                                             int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "",
                                                             string feeling = "", string weather = "")
         {
-            return (List<Log>)DLAM.UpdateLogAndRefreshTourLogList(log, date, report, distance, duration, rating, steps, weightkg, bloodpreassure, feeling, weather);
+            return (List<Log>)DLAM.UpdateLogAndRefreshTourLogList(log, report, distance, duration, rating, steps, weightkg, bloodpreassure, feeling, weather);
         }
 
         //DELETE TOUR, LOG
@@ -75,6 +75,12 @@ namespace TourFinder.BusinessLayer
         public List<Tour> ImportToursFromJSON()
         {
             return (List<Tour>)DLAM.ImportToursFromJSONFile();
+        }
+
+
+        public int DeleteUnusedImages(int savedImageCounter)
+        {
+            return DLAM.DeleteUnusedTourImages(savedImageCounter);
         }
     }
 }

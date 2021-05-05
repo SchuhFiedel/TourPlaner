@@ -19,5 +19,6 @@ namespace TourFinder.DataAccessLayer.Common
         IDataReader ExecuteReader(DbCommand command); // für alles wo daten zurückkommen
         int ExecuteScalar(DbCommand command); //für alles wo keine daten zurückkommen (also zb nur success)
 
+        //void DefineParameter<T>(DbCommand command, string v, DbType int32, object id);
     }
 }

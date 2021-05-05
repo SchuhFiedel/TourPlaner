@@ -13,5 +13,6 @@ namespace TourFinder.DataAccessLayer.DAObject
         int CopyTour(Tour oldTour);
         int DeleteTour(Tour oldTour);
 
+        IEnumerable<string> GetAllTourImages();
     }
 }

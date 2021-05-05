@@ -6,7 +6,7 @@
         public Tour Tour { get; set; }
         public string Date { get; set; }
 		public string Report { get; set; }
-		public float Distance { get; set; }
+		public int Distance { get; set; }
         public string Duration { get; set; }
 		public int Rating { get; set;}
 		public int Steps { get; set; }

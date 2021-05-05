@@ -29,7 +29,7 @@
                  VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch"
                  Text="{Binding TourAddUtilityProperty.Description, UpdateSourceTrigger=PropertyChanged}"/>
 
-        <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="100,5,100,5" Command="{Binding ExecuteUpdateTour}">Add Tour</Button>
+        <Button Grid.Row="4" Grid.ColumnSpan="2" Margin="100,5,100,5" Command="{Binding ExecuteUpdateTour}" Click="Button_Click">Update Tour</Button>
         
     </Grid>
 </Window>
