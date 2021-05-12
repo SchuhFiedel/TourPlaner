@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TourFinder.DataAccessLayer.Common;
 using TourFinder.Models;
+using TourFinder.BusinessLayer.PDF;
 
 namespace TourFinder.BusinessLayer
 {
@@ -67,7 +68,7 @@ namespace TourFinder.BusinessLayer
 
 
         //EXPORT INPORT
-        public void ExportToursToJSON(List<Tour> tourlist)
+        public void ExportToursToJSON(IEnumerable<Tour> tourlist)
         {
             DLAM.ExportToursToJSONFile(tourlist);
         }
@@ -78,9 +79,28 @@ namespace TourFinder.BusinessLayer
         }
 
 
+        //EXPORT PDF
+        public void PrintTourDataToPDF(Tour tour)
+        {
+            PDFMaker.MakeTourPDF(tour);
+        }
+
+        public void PrintAllToursToPDF(IEnumerable<Tour> tourlist)
+        {
+            PDFMaker.MakeAllTourPDF(tourlist);
+        }
+
+        public void PrintSummary(IEnumerable<Tour> tourlist)
+        {
+
+        }
+
+        //DELETE UNUSED IMAGES
         public int DeleteUnusedImages(int savedImageCounter)
         {
             return DLAM.DeleteUnusedTourImages(savedImageCounter);
         }
+
+
     }
 }

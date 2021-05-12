@@ -22,9 +22,9 @@
             <RowDefinition Height="13*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <!--#endregion Definitions-->
 
@@ -32,18 +32,20 @@
         <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" VerticalAlignment="Top">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="Import"/>
-                    <MenuItem Header="Save"/>
+                    <MenuItem Header="Import Tours From File" Command="{Binding ExecuteImportTours}"/>
+                    <MenuItem Header="Export Tours To File" Command="{Binding ExecuteExportTours}"/>
                 </MenuItem>
-                <MenuItem Header="_Edit">
-                    <MenuItem Header="PlaceHolder"/>
+                <MenuItem Header="_Reporting">
+                    <MenuItem Header="Print Tour Information" Command="{Binding ExecutePrintTourInfo}"/>
+                    <MenuItem Header="Print All Tour Information" Command="{Binding ExecutePrintAllTourInfo}"/>
+                    <MenuItem Header="Print Summary" Command="{Binding ExecutePrintSummary}"/>
                 </MenuItem>
-                <MenuItem Header="_Options">
+                <!--<MenuItem Header="_Options">
                     <MenuItem Header="PlaceHolder"/>
                 </MenuItem>
                 <MenuItem Header="_Help">
                     <MenuItem Header="PlaceHolder"/>
-                </MenuItem>
+                </MenuItem>-->
             </Menu>
         </DockPanel>
         <!--#endregion TopMenu-->

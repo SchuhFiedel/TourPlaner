@@ -60,14 +60,14 @@ namespace TourFinder.DataAccessLayer.MapQuestConnector
 
                 //Debug.WriteLine("OUTPUT FROM WEBSITE_\n" +respBody);
 
-                Task filetask = File.WriteAllTextAsync("..\\..\\..\\..\\WriteLines.json", respBody);
-                filetask.Wait();
+                //Task filetask = File.WriteAllTextAsync("..\\..\\..\\..\\WriteLines.json", respBody);
+                //filetask.Wait();
 
                 JObject mapData = JObject.Parse(respBody);
-                string ul_lat = (string)mapData["route"]["boundingBox"]["ul"]["lat"].ToString().Replace(",", ".");
-                string ul_lng = (string)mapData["route"]["boundingBox"]["ul"]["lng"].ToString().Replace(",", ".");
-                string lr_lat = (string)mapData["route"]["boundingBox"]["lr"]["lat"].ToString().Replace(",", ".");
-                string lr_lng = (string)mapData["route"]["boundingBox"]["lr"]["lng"].ToString().Replace(",", ".");
+                string ul_lat = mapData["route"]["boundingBox"]["ul"]["lat"].ToString().Replace(",", ".");
+                string ul_lng = mapData["route"]["boundingBox"]["ul"]["lng"].ToString().Replace(",", ".");
+                string lr_lat = mapData["route"]["boundingBox"]["lr"]["lat"].ToString().Replace(",", ".");
+                string lr_lng = mapData["route"]["boundingBox"]["lr"]["lng"].ToString().Replace(",", ".");
 
                 float distance = float.Parse(mapData["route"]["distance"].ToString());
 
@@ -125,6 +125,9 @@ namespace TourFinder.DataAccessLayer.MapQuestConnector
             fileNameValue = intFileNameValue.ToString();
 
             string fileLocation = internalPath + $"\\map{fileNameValue}.jpg";
+
+            FileInfo file = new FileInfo(fileLocation);
+            file.Directory.Create();
 
             //Debug.Print("We do be here though");
             using WebClient client = new();

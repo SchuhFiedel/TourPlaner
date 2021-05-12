@@ -58,6 +58,15 @@ namespace TourFinder
         public ICommand ExecuteCopyLog { get; }
         public ICommand ExecuteDeleteLog { get; }
 
+        //Export Import Commands
+        public ICommand ExecuteImportTours { get; }
+        public ICommand ExecuteExportTours { get; }
+
+        //PDF Commands
+        public ICommand ExecutePrintTourInfo { get; }
+        public ICommand ExecutePrintAllTourInfo { get; }
+        public ICommand ExecutePrintSummary { get; }
+
         #endregion
 
         //Other Properties
@@ -204,17 +213,22 @@ namespace TourFinder
                 {
                     _imagePath = IMGDIR + value;
                     
-                }else if(value == null || _imagePath == null)
+                }
+                try
+                {
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.UriSource = new Uri(_imagePath);
+                    image.EndInit();
+                    TourImage = image;
+                }
+                catch(Exception e)
                 {
                     _imagePath = FALLBACKIMG;
+                    log.Info(String.Format("No Image Found for Tour: {0} - Using Fallback Image \n Error: {1}", TourSelection.Name, e.Message));
                 }
-
-                BitmapImage image = new BitmapImage();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = new Uri(_imagePath);
-                image.EndInit();
-                TourImage = image;
+                
 
                 OnPropertyChanged(nameof(TourImage));
                 OnPropertyChanged(nameof(ImagePath));
@@ -265,8 +279,17 @@ namespace TourFinder
             this.ExecuteCopyLog = new RelayCommand((_) => CopyLog());
             this.ExecuteDeleteLog = new RelayCommand((_) => DeleteLog());
 
-            //To fill list with saved tours from DataLayer
-            FillTourList();
+            //Export Import Commands
+            this.ExecuteExportTours = new RelayCommand((_) => ExportTours());
+            this.ExecuteImportTours = new RelayCommand((_) => ImportTours());
+
+            //PDF Commands
+            ExecutePrintTourInfo = new RelayCommand((_) => TourToPDF());
+            ExecutePrintAllTourInfo = new RelayCommand((_) => AllToursToPDF());
+            ExecutePrintSummary = new RelayCommand((_) => PDFSummary());
+
+        //To fill list with saved tours from DataLayer
+        FillTourList();
         }
 
         
@@ -427,6 +450,37 @@ namespace TourFinder
                 PopOutWindow.Show();
                 log.Info(String.Format("Opened Window: {0}", nameof(PopOutWindow)));
             }
+        }
+
+        //Export Import Tours
+        public void ExportTours()
+        {
+            BLM.ExportToursToJSON(Tourlist);
+        }
+
+        public void ImportTours()
+        {
+            BLM.ImportToursFromJSON();
+            Tourlist = new ObservableCollection<Tour>(BLM.GetAllToursFromDB());
+        }
+
+        //PDF Functions
+        public void TourToPDF()
+        {
+            if (TourSelection != null)
+            {
+                BLM.PrintTourDataToPDF(TourSelection);
+            }
+        }
+
+        public void AllToursToPDF()
+        {
+            BLM.PrintAllToursToPDF(Tourlist);
+        }
+
+        public void PDFSummary()
+        {
+            BLM.PrintSummary(Tourlist);
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

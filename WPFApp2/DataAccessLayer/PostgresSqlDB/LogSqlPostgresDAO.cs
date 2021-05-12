@@ -52,6 +52,9 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
 
             return FindById(database.ExecuteScalar(command));
         }
+        public Log AddNewTourLog(Tour tour, Log log) {
+            return AddNewTourLog(tour, log.Date, log.Report, log.Distance, log.Duration, log.Rating, log.Steps, log.WeightKG, log.BloodPreassure, log.Feeling, log.Weather);
+        } 
 
         public Log FindById(int logId)
         {

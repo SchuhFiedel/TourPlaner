@@ -85,6 +85,11 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
             return FindByID(database.ExecuteScalar(command));
         }
 
+        public Tour AddNewTour(Tour tour)
+        {
+            return AddNewTour(tour.Name, tour.StartLocation, tour.EndLocation, tour.Distance, tour.MapImagePath, tour.Description);
+        }
+
         public int CopyTour(Tour oldTour)
         {
             DbCommand command = database.CreateCommand(SQL_INSTERT_NEW_ITEM);
@@ -133,5 +138,7 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
             }
             return mapPathList;
         }
+
+        
     }
 }

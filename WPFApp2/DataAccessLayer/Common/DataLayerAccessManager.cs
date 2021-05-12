@@ -17,15 +17,15 @@ namespace TourFinder.DataAccessLayer.Common
         ITourDAO tourDAO;
         ITourLogDAO logDAO;
         IMapQuestAccess mapQuest;
-        FileExInporter fileManager;
+        Filemanager fileManager;
         private static DataLayerAccessManager instance;
 
          DataLayerAccessManager()
         {
             database = PostgresSqlConnector.Instance();
-            fileManager = FileExInporter.GetInstance();
             tourDAO = new TourSqlPostgresDAO(database);
             logDAO = new LogSqlPostgresDAO(database, tourDAO);
+            fileManager = Filemanager.GetInstance(tourDAO, logDAO);
             mapQuest = RestDataClass.Instance();
         }
 
@@ -223,13 +223,22 @@ namespace TourFinder.DataAccessLayer.Common
         }
 
         //IMPORT EXPORT
-        public IEnumerable<Tour> ImportToursFromJSONFile()
+        public IEnumerable<Tour> ImportToursFromJSONFile(string path = null)
         {
-            return fileManager.ImportToursFromFile();
+            if(path == null)
+            {
+                path = "TourData.json";
+            }
+            return fileManager.ImportToursFromFile(path);
         }
-        public void ExportToursToJSONFile(IEnumerable<Tour> tourlist)
+        public void ExportToursToJSONFile(IEnumerable<Tour> tourlist, string path = null)
         {
-            fileManager.ExportToursToFile(tourlist);
+            if(path == null)
+            {
+                path = "TourData.json";
+            }
+
+            fileManager.ExportToursToFile(tourlist, path);
         }
 
     }

@@ -11,6 +11,7 @@ namespace TourFinder.DataAccessLayer.DAObject
         Log AddNewTourLog(Tour tour, string date, string report = "\"\"", int distance = 0, string druration = "\"\"",
                             int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "\"\"",
                             string feeling = "\"\"", string weather = "\"\"");
+        Log AddNewTourLog(Tour tour, Log log);
         int UpdateLog(Log oldLog, string report = "\"\"", int distance = 0, string druration = "\"\"",
                             int rating = 0, int steps = 0, float weightkg = 0, string bloodpreassure = "\"\"",
                             string feeling = "\"\"", string weather = "\"\"");
