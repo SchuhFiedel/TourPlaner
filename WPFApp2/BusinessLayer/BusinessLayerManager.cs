@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using TourFinder.DataAccessLayer.Common;
 using TourFinder.Models;
 using TourFinder.BusinessLayer.PDF;
+using System.Diagnostics;
 
 namespace TourFinder.BusinessLayer
 {
     class BusinessLayerManager
     {
         DataLayerAccessManager DLAM = DataLayerAccessManager.GetInstance();
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger("BusinessLayerManager.cs");
 
         public List<Tour> GetAllToursFromDB()
         {
@@ -66,7 +68,6 @@ namespace TourFinder.BusinessLayer
         }
 
 
-
         //EXPORT INPORT
         public void ExportToursToJSON(IEnumerable<Tour> tourlist)
         {
@@ -82,17 +83,44 @@ namespace TourFinder.BusinessLayer
         //EXPORT PDF
         public void PrintTourDataToPDF(Tour tour)
         {
-            PDFMaker.MakeTourPDF(tour);
+            try
+            {
+                log.Info(String.Format("Print Tour To PDF: {0}", tour.ID));
+                PDFMaker.MakeTourPDF(tour);
+            }
+            catch(Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                log.Info(String.Format(e.Message));
+            }
         }
 
         public void PrintAllToursToPDF(IEnumerable<Tour> tourlist)
         {
-            PDFMaker.MakeAllTourPDF(tourlist);
+            try
+            {
+                log.Info(String.Format("Print All Tours To PDF"));
+                PDFMaker.MakeAllTourPDF(tourlist);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                log.Info(String.Format(e.Message));
+            }
         }
 
         public void PrintSummary(IEnumerable<Tour> tourlist)
         {
-
+            try
+            {
+                log.Info(String.Format("Print Summary To PDF"));
+                PDFMaker.MakeTourSummaryPDF(tourlist);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                log.Info(String.Format(e.Message));
+            }
         }
 
         //DELETE UNUSED IMAGES
@@ -100,7 +128,5 @@ namespace TourFinder.BusinessLayer
         {
             return DLAM.DeleteUnusedTourImages(savedImageCounter);
         }
-
-
     }
 }
