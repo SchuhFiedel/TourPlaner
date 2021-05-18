@@ -128,5 +128,63 @@ namespace TourFinder.BusinessLayer
         {
             return DLAM.DeleteUnusedTourImages(savedImageCounter);
         }
+
+        //Full Text Search
+        public IEnumerable<Tour> Search(string itemName)
+        {
+            itemName = itemName.ToLower();
+            IEnumerable<Tour> Tours = GetAllToursFromDB();
+            List<Tour> foundItems = new List<Tour>();
+
+            foreach (Tour tour in Tours)
+            {
+                int outDistance = -1;
+                Int32.TryParse(itemName, out outDistance);
+                if (
+                    tour.EndLocation.ToLower().Contains(itemName) ||
+                    tour.StartLocation.ToLower().Contains(itemName) ||
+                    tour.Description.ToLower().Contains(itemName) ||
+                    tour.Name.ToLower().Contains(itemName) ||
+                    (tour.Distance == outDistance)                     
+                    )
+                {
+                    foundItems.Add(tour);
+                    continue;
+                }
+
+                foreach (var logItem in tour.LogList)
+                {
+                    int outRating = -1, outLogDistance = -1, outSteps = -1;
+                    float outWeight = -1;
+
+                    int.TryParse(itemName, out outRating);
+                    int.TryParse(itemName, out outLogDistance);
+                    int.TryParse(itemName, out outSteps);
+                    float.TryParse(itemName, out outWeight);
+
+                    if (
+                        logItem.Weather.ToLower().Contains(itemName) ||
+                        logItem.BloodPreassure.ToLower().Contains(itemName) ||
+                        logItem.Date.ToLower().Contains(itemName) ||
+                        logItem.Duration.ToLower().Contains(itemName) ||
+                        logItem.Feeling.ToLower().Contains(itemName) ||
+                        logItem.Report.ToLower().Contains(itemName) ||
+                        logItem.Rating == outRating ||
+                        logItem.Distance ==  outLogDistance ||
+                        logItem.Steps ==  outSteps ||
+                        logItem.WeightKG == outWeight 
+                        )
+                    {
+                        foundItems.Add(tour);
+                        continue;
+                    }
+                }
+            }
+
+            log.Info($"Found {foundItems.Count} for the search term {itemName}");
+
+            return foundItems;
+        }
+
     }
 }

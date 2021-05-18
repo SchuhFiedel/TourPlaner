@@ -261,6 +261,8 @@ namespace TourFinder
             // https://docs.microsoft.com/en-us/archive/msdn-magazine/2009/february/patterns-wpf-apps-with-the-model-view-viewmodel-design-pattern#id0090030
             this.ExecuteTourListBox = new RelayCommand((_) => Description = TourSelection.Name);
 
+            this.ExecuteSearch = new RelayCommand((_) => Search());
+
             //Tour Commands
             this.ExecuteOpenAddTourWindow = new RelayCommand((_) => OpenAddTourWindow());
             this.ExecuteOpenTourUpdateWindow = new RelayCommand((_) => OpenUpdateTourWindow());
@@ -288,8 +290,8 @@ namespace TourFinder
             ExecutePrintAllTourInfo = new RelayCommand((_) => AllToursToPDF());
             ExecutePrintSummary = new RelayCommand((_) => PDFSummary());
 
-        //To fill list with saved tours from DataLayer
-        FillTourList();
+            //To fill list with saved tours from DataLayer
+            FillTourList();
         }
 
         
@@ -297,6 +299,12 @@ namespace TourFinder
         {
             Tourlist = new ObservableCollection<Tour>(BLM.GetAllToursFromDB());
             log.Info(String.Format("Fill Tour List with {0} Items", Tourlist.Count));
+        }
+
+        public void Search()
+        {
+            log.Info(String.Format("Search initiated with Term: {0}", Input));
+            Tourlist = new ObservableCollection<Tour>(BLM.Search(Input));
         }
 
 
@@ -455,11 +463,13 @@ namespace TourFinder
         //Export Import Tours
         public void ExportTours()
         {
+            log.Info(String.Format("Export Tours to JSON"));
             BLM.ExportToursToJSON(Tourlist);
         }
 
         public void ImportTours()
         {
+            log.Info(String.Format("Import Tours From JSON"));
             BLM.ImportToursFromJSON();
             Tourlist = new ObservableCollection<Tour>(BLM.GetAllToursFromDB());
         }
@@ -469,17 +479,20 @@ namespace TourFinder
         {
             if (TourSelection != null)
             {
+                log.Info(String.Format("Print Tour PDF of Tour: {0}", TourSelection.ID));
                 BLM.PrintTourDataToPDF(TourSelection);
             }
         }
 
         public void AllToursToPDF()
         {
+            log.Info(String.Format("Print Tour PDF of All Tours"));
             BLM.PrintAllToursToPDF(Tourlist);
         }
 
         public void PDFSummary()
         {
+            log.Info(String.Format("Print Tour Summary of All Tour"));
             BLM.PrintSummary(Tourlist);
         }
 
