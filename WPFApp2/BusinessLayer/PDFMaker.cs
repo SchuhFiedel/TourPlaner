@@ -12,7 +12,7 @@ using TourFinder.Models;
 
 namespace TourFinder.BusinessLayer.PDF
 {
-    static class PDFMaker
+    public static class PDFMaker
     {
         public static string imagePath = ConfigurationManager.AppSettings["ImageFolder"];
         public static PdfFont headerFont = new PdfStandardFont(PdfFontFamily.Helvetica, 20);
@@ -22,10 +22,17 @@ namespace TourFinder.BusinessLayer.PDF
 
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger("PDFMaker.cs");
 
-        public static void MakeTourPDF(Tour tour)
+        public static void MakeTourPDF(Tour tour, string filename = null)
         {
-            
-            string file = filepath + tour.Name + ".pdf"; // aus .config auslesen
+            string file = "";
+            if (filename == null)
+            {
+                file = filepath + tour.Name + ".pdf";// aus .config auslesen
+            }
+            else
+            {
+                file = filepath + filename + ".pdf";
+            }
 
             FileStream fs = File.Open(file, FileMode.Create);
             PdfDocument document = new PdfDocument();
@@ -89,10 +96,18 @@ namespace TourFinder.BusinessLayer.PDF
             return;
         }
         
-        public static void MakeAllTourPDF(IEnumerable<Tour> tourlist)
+        public static void MakeAllTourPDF(IEnumerable<Tour> tourlist, string filename = null)
         {
 
-            string file = filepath + "AllTours.pdf"; // aus .config auslesen
+            string file = "";
+            if (filename == null)
+            {
+                file = filepath + "AllTours.pdf"; // aus .config auslesen
+            }
+            else
+            {
+                file = filepath + filename + ".pdf";
+            }
 
             FileStream fs = File.Open(file, FileMode.Create);
             PdfDocument document = new PdfDocument();
@@ -158,11 +173,19 @@ namespace TourFinder.BusinessLayer.PDF
             return;
         }
 
-        public static void MakeTourSummaryPDF(IEnumerable<Tour> tourlist)
+        public static void MakeTourSummaryPDF(IEnumerable<Tour> tourlist, string filename = null)
         {
-            string file = filepath + "Summary.pdf"; // aus .config auslesen
+            string file = "";
+            if (filename == null)
+            {
+                file = filepath + "Summary.pdf"; // aus .config auslesen
+            }
+            else
+            {
+                file = filepath + filename + ".pdf";
+            }
+
             List<Tour> alltours = new List<Tour>(tourlist);
-            
 
             FileStream fs = File.Open(file, FileMode.Create);
             PdfDocument document = new PdfDocument();

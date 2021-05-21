@@ -5,10 +5,12 @@ using Newtonsoft.Json.Linq;
 using System.Linq;
 using TourFinder;
 using TourFinder.Models;
+using System.Configuration;
+using System.Diagnostics;
 
 namespace NUnitTestProject1
 {
-    public class JsonReadTests
+    public class JsonReadAndConfigTests
     {
 
         static string PATH = "..\\..\\..\\..\\WriteLines.json";
@@ -49,6 +51,31 @@ namespace NUnitTestProject1
             Assert.IsNotNull(output);
         }
 
-        
+        [Test]
+        public void AppConfigTest()
+        {
+            string path = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None).FilePath;
+            TestContext.WriteLine($"Config is Expected at path: {path}");
+            Assert.IsNotNull(path);
+        }
+
+        [Test]
+        public void ConnectionStringTest()
+        {
+            Assert.IsNotNull(ConfigurationManager.ConnectionStrings["PostgresSQLConnectionString"].ConnectionString);
+        }
+
+        [Test]
+        public void AppSettingsTest()
+        {
+            System.Collections.Specialized.NameValueCollection appsettings = ConfigurationManager.AppSettings;
+            List<bool> assertList = new List<bool>();
+            foreach(var set in appsettings)
+            {
+                assertList.Add(set != null);
+                TestContext.WriteLine(set);
+            }
+            CollectionAssert.AllItemsAreNotNull(appsettings);
+        }
     }
 }

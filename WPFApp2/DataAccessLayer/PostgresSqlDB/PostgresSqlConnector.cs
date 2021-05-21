@@ -8,7 +8,7 @@ using TourFinder.DataAccessLayer.Common;
 
 namespace TourFinder.DataAccessLayer.PostgresSqlDB
 {
-    class PostgresSqlConnector : IDBAccess
+    public class PostgresSqlConnector : IDBAccess
     {
         private DbConnection connection;
         static PostgresSqlConnector instance = null;

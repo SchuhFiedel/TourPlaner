@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace TourFinder.BusinessLayer
 {
-    class BusinessLayerManager
+    public class BusinessLayerManager
     {
         DataLayerAccessManager DLAM = DataLayerAccessManager.GetInstance();
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger("BusinessLayerManager.cs");

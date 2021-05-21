@@ -33,7 +33,7 @@ namespace TourFinder.DataAccessLayer.FileSystem
             return instance;
         }
 
-        public IEnumerable<Tour> ImportToursFromFile(string fileName)
+        public IEnumerable<Tour> ImportToursFromFile(string fileName = "TourData.json")
         {
             try
             {
@@ -64,7 +64,7 @@ namespace TourFinder.DataAccessLayer.FileSystem
             return tourDAO.GetTours();
         }
 
-        public void ExportToursToFile(IEnumerable<Tour> tourList, string filename)
+        public void ExportToursToFile(IEnumerable<Tour> tourList, string filename = "TourData.json")
         {
             try
             {

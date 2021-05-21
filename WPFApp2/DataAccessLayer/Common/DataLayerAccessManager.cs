@@ -223,21 +223,12 @@ namespace TourFinder.DataAccessLayer.Common
         }
 
         //IMPORT EXPORT
-        public IEnumerable<Tour> ImportToursFromJSONFile(string path = null)
+        public IEnumerable<Tour> ImportToursFromJSONFile(string path = "TourData.json")
         {
-            if(path == null)
-            {
-                path = "TourData.json";
-            }
             return fileManager.ImportToursFromFile(path);
         }
-        public void ExportToursToJSONFile(IEnumerable<Tour> tourlist, string path = null)
+        public void ExportToursToJSONFile(IEnumerable<Tour> tourlist, string path = "TourData.json")
         {
-            if(path == null)
-            {
-                path = "TourData.json";
-            }
-
             fileManager.ExportToursToFile(tourlist, path);
         }
 

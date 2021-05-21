@@ -13,7 +13,7 @@ using TourFinder.DataAccessLayer.Common;
 
 namespace TourFinder.DataAccessLayer.MapQuestConnector
 {
-    class RestDataClass : IMapQuestAccess
+    public class RestDataClass : IMapQuestAccess
     {
         private static RestDataClass instance = null;
         private static HttpClient httpClient = null;

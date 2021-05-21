@@ -9,7 +9,7 @@ using TourFinder.Models;
 
 namespace TourFinder.DataAccessLayer.PostgresSqlDB
 {
-    class LogSqlPostgresDAO : ITourLogDAO
+    public class LogSqlPostgresDAO : ITourLogDAO
     {
         private const string SQL_FIND_BY_ID = "SELECT * FROM logs WHERE id = @id";
         private const string SQL_FIND_BY_TOUR = "SELECT * FROM logs WHERE tourId = @id";

@@ -18,4 +18,10 @@
     <ProjectReference Include="..\WPFApp2\WPFApp2.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="testhost.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
