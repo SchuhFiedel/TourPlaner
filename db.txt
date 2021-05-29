@@ -1,0 +1,227 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.1
+-- Dumped by pg_dump version 13.1
+
+-- Started on 2021-05-29 13:20:14
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+DROP DATABASE tourplanner;
+--
+-- TOC entry 3005 (class 1262 OID 24645)
+-- Name: tourplanner; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE tourplanner WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'German_Germany.1252';
+
+
+ALTER DATABASE tourplanner OWNER TO postgres;
+
+\connect tourplanner
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 204 (class 1259 OID 24661)
+-- Name: logs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.logs (
+    id integer NOT NULL,
+    tourid bigint NOT NULL,
+    date text NOT NULL,
+    report text,
+    distance bigint,
+    duration text,
+    rating bigint,
+    steps bigint,
+    weightkg double precision,
+    bloodpreassure text,
+    feeling text,
+    weather text
+);
+
+
+ALTER TABLE public.logs OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 24659)
+-- Name: logs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.logs_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.logs_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3006 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.logs_id_seq OWNED BY public.logs.id;
+
+
+--
+-- TOC entry 201 (class 1259 OID 24654)
+-- Name: tourId_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public."tourId_seq"
+    START WITH 2
+    INCREMENT BY 1
+    MINVALUE 0
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public."tourId_seq" OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 24646)
+-- Name: tours; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.tours (
+    startlocation text NOT NULL,
+    name text NOT NULL,
+    mapimagepath text NOT NULL,
+    endlocation text NOT NULL,
+    distance double precision NOT NULL,
+    description text,
+    id bigint NOT NULL
+);
+
+
+ALTER TABLE public.tours OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 24656)
+-- Name: tours_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.tours ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.tours_id_seq
+    START WITH 2
+    INCREMENT BY 1
+    MINVALUE 0
+    MAXVALUE 999999999
+    CACHE 1
+);
+
+
+--
+-- TOC entry 2860 (class 2604 OID 24664)
+-- Name: logs id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs ALTER COLUMN id SET DEFAULT nextval('public.logs_id_seq'::regclass);
+
+
+--
+-- TOC entry 2999 (class 0 OID 24661)
+-- Dependencies: 204
+-- Data for Name: logs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.logs VALUES (57, 50, '11.05.2021', 'asddddddddddd', 1, 'rrr', 7, 126259, 148.7626, 'asd', 'wwwwww', 'wwwwww');
+INSERT INTO public.logs VALUES (58, 51, '13.05.2021', '', 4, '5:00', 10, 8633, 87.76978, '50/14455', 'great', 'Rainy');
+INSERT INTO public.logs VALUES (59, 54, '18.05.2021', '', 1, '3', 10, 80936, 146.7626, 'High', 'Sweaty', 'Hot');
+INSERT INTO public.logs VALUES (56, 50, '11.05.2021', 'ssssssss', 3, '20', 10, 48561, 87.76978, 'fff', 'good', 'good');
+
+
+--
+-- TOC entry 2995 (class 0 OID 24646)
+-- Dependencies: 200
+-- Data for Name: tours; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.tours OVERRIDING SYSTEM VALUE VALUES ('Stephansplatz, Wien, Österreich', 'Steffl nach Heiligenstadt', 'map17.jpg', 'Heiligenstadt, Wien, Österreich', 4.068, '', 51);
+INSERT INTO public.tours OVERRIDING SYSTEM VALUE VALUES ('Praterstern, Wien, Österreich', 'Prater - Liesing', 'map18.jpg', 'Liesing, Wien, Österreich', 79.25, 'Whoop Whoop', 52);
+INSERT INTO public.tours OVERRIDING SYSTEM VALUE VALUES ('Wien, Kagran, Österreich', 'Heyho', 'map16.jpg', 'Wien, Kaisermühlen, Österreich', 3.036, 'bbbbbbb', 50);
+INSERT INTO public.tours OVERRIDING SYSTEM VALUE VALUES ('Sevilla, Spanien', 'rrrrrr', 'map19.jpg', 'Calle Fernando IV,Sevilla, Spanien', 1.369, 'Sevilla ayayay', 54);
+
+
+--
+-- TOC entry 3007 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: logs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.logs_id_seq', 59, true);
+
+
+--
+-- TOC entry 3008 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: tourId_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."tourId_seq"', 2, false);
+
+
+--
+-- TOC entry 3009 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: tours_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tours_id_seq', 58, true);
+
+
+--
+-- TOC entry 2864 (class 2606 OID 24669)
+-- Name: logs logs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.logs
+    ADD CONSTRAINT logs_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2862 (class 2606 OID 24653)
+-- Name: tours tours_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.tours
+    ADD CONSTRAINT tours_pkey PRIMARY KEY (id);
+
+
+-- Completed on 2021-05-29 13:20:17
+
+--
+-- PostgreSQL database dump complete
+--
+
