@@ -24,7 +24,7 @@ namespace TourFinder.DataAccessLayer.Common
         {
             database = PostgresSqlConnector.Instance();
             tourDAO = new TourSqlPostgresDAO(database);
-            logDAO = new LogSqlPostgresDAO(database, tourDAO);
+            logDAO = new LogSqlPostgresDAO(database);
             fileManager = Filemanager.GetInstance(tourDAO, logDAO);
             mapQuest = RestDataClass.Instance();
         }

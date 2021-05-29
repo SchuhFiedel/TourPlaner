@@ -1,0 +1,311 @@
+@startuml
+
+scale 0.5
+class TourFinder.DataAccessLayer.Common.DataLayerAccessManager{
+   - IDBAccess database;
+   - ITourDAO tourDAO;
+   - ITourLogDAO logDAO;
+   - IMapQuestAccess mapQuest;
+   - Filemanager fileManager;
+   - static instance DataLayerAccessManager
+
+   - DataLayerAccessManager()
+   + static DataLayerAccessManager GetInstance()
+   + GetToursFromDB() : IEnumerable<Tour>
+   + CreateNewTour(name : string, startLocation : string, endLocation : string, description : string) : Tour
+   + CreateNewLogAndRefreshTourLogList(tour : Tour, date : string, report : string, distance : int, duration : string, rating : int, steps : int, weightkg : float, bloddpreassure : string, feeling : string, weather : string) : IEnumerable<Log>
+   + UpdateLogAndRefreshTourLogList(log : Log, date : string, report : string, distance : int, duration : string, rating : int, steps : int, weightkg : float, bloddpreassure : string, feeling : string, weather : string) : IEnumerable<Log>
+   + UpdateTourAndRefreshTourList(tour : Tour, name : string, description : string) : IEnumerable<Tour>
+   + CopyLogAndRefreshTourLogList(oldLog : Log) : IEnumerable<Log>
+   + CopyTourAndRefreshTourList(oldTour : Tour) : IEnumerable<Tour>
+   + DeleteLogAndRefreshTourLogList(oldLog : Log) : IEnumerable<Log>
+   + DeleteTourAndRefreshTourList(oldTour : Tour) : IEnumerable<Log>
+   + DeleteUnusedTourImages(savedImageCounter : int) : int
+   + ImportToursFromJSONFile(path : string) : IEnumerable<Tour>
+   + ExportToursToJSONFile(tourlist : IEnumerable<Tour>, path : string) : void
+}
+
+interface TourFinder.DataAccessLayer.Common.IDBAccess{
+   + string GetAllCardsFromDB() : string
+   + CreateConnection() : DBConnection
+   + CloseConnection() : void
+   + CreateCommand(genericCommandText : string) : DBCommand
+   - DeclareParameter(command : DbCommand, name : string, type : DbType) : int
+   - DefineParameter<T>(command DbCommand, name : string, type : DbType, value : T) : void
+   - SetParameter<T>(command DbCommand, name : string, value : T) : void
+   - ExecuteReader(command : DbCommand) : IDataReader
+   - ExecuteScalar(command DbCommand) : int
+}
+
+interface TourFinder.DataAccessLayer.Common.IMapQuestAccess{
+   + GetRouteSaveImg(startLocation : string, endLocation : string) : Tuple<string,float>
+}
+
+interface TourFinder.DataAccessLayer.MapQuestConnector.RestDataClass{
+   - static instance : RestDataClass
+   - static httpClient : HttpClient
+   - static mapquestDirectionsUri : string
+   - static mapquestStaticMapUri : string
+   - static internalPath : string
+   - static key : string
+
+   - RestDataClass()
+   + static Instance() : RestDataClass
+   + GetRouteSaveImg(startLocation : string, endLocation : string) : Tuple<string, float>
+   - GetAndSaveImage(boundingbox : string, sessionID : string) : string
+}
+
+interface TourFinder.DataAccessLayer.DAObject.ITourDAO{
+   - FindByID(itemId int) : Tour
+   - AddNewTou(name:string, startLocation: string, endLocation : string, distance : float, mapImagePath : string, description : string) : Tour
+   - AddNewTour(tour : Tour) : Tour
+   - GetTours() : IEnumerable<Tour>
+   - UpdateTour(tourid : ind, newName : string, newDescription : string) : int
+   - CopyTour(oldTour: Tour) : int
+   - DeleteTour(oldTour : Tour) : int
+   - GetAllTourImages() : IEnumerable<string>
+}
+
+interface TourFinder.DataAccessLayer.DAObject.ITourLogDAO{
+   - FindById(logId : int) Log
+   - GetLogsOfTour(tour : Tour) : IEnumerable<Log>
+   - AddNewTourLog(tour : Tour, date : string, report : string, distance : int, duration : string, rating : int, steps : int, weightkg : float, bloddpreassure : string, feeling : string, weather : string) : Log
+   - AddNewTourLog(tour : Tour, log : Log) : Log
+   - UpdateLog(log : Log, date : string, report : string, distance : int, duration : string, rating : int, steps : int, weightkg : float, bloddpreassure : string, feeling : string, weather : string) : int
+   - CopyLog(oldLog : Log): int
+   - DeleteLog (oldLog : Log) : int
+}
+
+class TourFinder.DataAccessLayer.PostgresSqlDB.PostgresSqlConnector{
+   - connection : DbConnection
+   - static instance : PostgresSqlConnector
+   - static connectionString : string
+   - PostgresSqlConnector() 
+   + static Instance() :PostgresSqlConnector
+   + CreateCommand (genericCommandText) : DbCommand
+   + string GetAllCardsFromDB() : string
+   + CreateConnection() : DBConnection
+   + CloseConnection() : void
+   - DeclareParameter(command : DbCommand, name : string, type : DbType) : int
+   - DefineParameter<T>(command DbCommand, name : string, type : DbType, value : T) : void
+   - SetParameter<T>(command DbCommand, name : string, value : T) : void
+   - ExecuteReader(command : DbCommand) : IDataReader
+   - ExecuteScalar(command DbCommand) : int
+}
+
+class TourFinder.DataAccessLayer.PostgresSqlDB.LogSqlPostgresDAO{
+   - const SQL_FIND_BY_ID : string
+   - const SQL_FIND_BY_TOUR : string
+   - const SQL_INSTERT_NEW_LOG : string
+   - const SQL_DELETE_LOG: string
+   - const SQL_UPDATE_LOG: string
+   - database : IDBAccess
+   + LogSqlPostgresDAO(database :IDBAccess)
+   + FindById(logId : int) Log
+   + GetLogsOfTour(tour : Tour) : IEnumerable<Log>
+   + AddNewTourLog(tour : Tour, date : string, report : string, distance : int, duration : string, rating : int, steps : int, weightkg : float, bloddpreassure : string, feeling : string, weather : string) : Log
+   + AddNewTourLog(tour : Tour, log : Log) : Log
+   + UpdateLog(log : Log, date : string, report : string, distance : int, duration : string, rating : int, steps : int, weightkg : float, bloddpreassure : string, feeling : string, weather : string) : int
+   + CopyLog(oldLog : Log): int
+   + DeleteLog (oldLog : Log) : int
+   - QueryLogsFromDB (command : DbCommand) : IEnumerable<Log>
+}
+
+class TourFinder.DataAccessLayer.PostgresSqlDB.TourSqlPostgresDAO{
+   - database : IDBAccess
+   - const SQL_FIND_BY_ID : string
+   - const SQL_GET_ALL_ITEMS : string
+   - const SQL_INSERT_NEW_ITEM : string
+   - const SQL_UPDATE_TOUR : string
+   - const SQL_CHECK_IMG : string
+   - const SQL_DELETE_TOUR : string
+   + TourSqlPostgresDAO(database : IDBAccess)
+   + FindByID(itemId int) : Tour
+   + AddNewTou(name:string, startLocation: string, endLocation : string, distance : float, mapImagePath : string, description : string) : Tour
+   + AddNewTour(tour : Tour) : Tour
+   + GetTours() : IEnumerable<Tour>
+   + UpdateTour(tourid : ind, newName : string, newDescription : string) : int
+   + CopyTour(oldTour: Tour) : int
+   + DeleteTour(oldTour : Tour) : int
+   + GetAllTourImages() : IEnumerable<string>
+   - QueryToursFromDatabase(command : DbCommand) : IEnumerable<Tour>
+}
+
+class TourFinder.DataAccessLayer.FileSystem.Filemanager{
+   - filefolder : string
+   - static instance : Filemanager
+   - static tourDAO : ITourDAO
+   - static logDAO : ITourLogDAO
+
+   - Filemanager(newTourDAO : ITourDAO, newLogDAO : ITourLogDAO)
+   + static GetInstance(newTourDAO : ITourDAO, newLogDAO : ITourLogDAO) : Filemanager
+   + ImportToursFromFile(filename : string) : IEnumerable<Tour>
+   + ExportToursToFile(tourlist : IEnumerable<Tour>, filename : string) : void 
+   + GetAllImagesFromFolder () : IEnumerable<string>
+   + DeleteImage(image string) : void
+}
+
+class TourFinder.MainViewModel
+{
+   - static IMGDIR : string 
+   - static FALLBACKIMG : string 
+   - _tourImage : BitmapImage 
+   - _description : string 
+   - _input : string 
+   - _imagePath : string 
+   - _savedImagesCounter : int 
+   - _selectedTour : Tour 
+   - _logSelection : Log 
+   - PopOutWindow : Window 
+   - _tourlist : ObservableCollection<Tour>
+   -  _dataGridLogList : ObservableCollection<Log>
+   - static readonly log : log4net.ILog
+   - BLM : BusinessLayerManager 
+   + event propertyChanged : PropertyChangedEventHandler 
+   + <<property>> Tourlist : ObservableCollection<Tour> 
+   +  <<property>> dataGridLogList : ObservableCollection<Log>
+   +  <<property>> TourSelection : Tour
+   +  <<property>> LogSelection : Log
+   +  <<property>> TouraddUtilityProperty : TourAddUtility
+   +  <<property>> LogAddUtility : Log
+   +  <<property>> Input : string
+   +  <<property>> Description : string
+   +  <<property>> ImagePath : string
+   +  <<property>> TourImage : BitmapImage
+
+   + MainViewModel()
+   + FillTourList() : void
+   + Search () : void
+   + AddTour() : void
+   + UpdateTour() : void
+   + CopyTour() : void 
+   + DeleteTour() : void
+   + AddLog() : void
+   + UpdateLog() : void
+   + CopyLog() : void
+   + DeleteLog() : void
+   + OpenAddTourWindow() : void
+   + OpenUpdateTourWindow() : void
+   + OpenAddLogWindow() : void
+   + OpenUpdateLogWindow() : void
+   + ExportTours() : void
+   + ImportTours() : void
+   + TourToPDF() : void
+   + AllToursToPDF() : void
+   + PDFSummary() : void
+   # virtual OnPropertyChanged(propertyName = null : string) : void
+}
+
+class TourFinder.RelayCommand {
+   - _execute : Action<object>
+   - _canExecute : Predicate<object>
+   
+   + RelayCommand(execute : Action<object>, canExecute = null : Predicate<object>)
+   + CanExecute(parameter : object) : bool
+   + Execute(parameter : object) : void
+   + event CanExecuteChanged : EventHandler
+}
+
+class TourFinder.AddLogWindow{
+   + AddLogWindow()
+}
+
+class TourFinder.AddTourWindow{
+   + AddTourWindow()
+}
+
+class TourFinder.UpdateLogWindow{
+   + UpdateLogWindow()
+}
+
+class TourFinder.UpdateTourWindow{
+   + UpdateTourWindow()
+}
+
+class TourFinder.MainWindow{
+   + MainWindow()
+}
+
+class TourFinder.Models.Tour{
+   + <<property>> ID : int
+   + <<property>> Name: string
+   + <<property>> StartLocation : string
+   + <<property>> EndLocation : string
+   + <<property>> Description : string
+   + <<property>> Distance : float
+   + <<property>> LogList : ObservableCollection<Log>
+   + <<property>> MapImagePath : string
+}
+
+class TourFinder.Models.TourAddUtility{
+   - _Name : string
+   - _StartLocation : string
+   - _EndLocation : string
+   - _Description : string
+   - _ImagePath : string
+   - _Distance : float
+
+   + <<property>> Name : string
+   + <<property>> StartLocation : string
+   + <<property>> EndLocation : string
+   + <<property>> Description : string
+   + <<property>> ImagePath : string
+   + <<property>> Distance : float
+}
+
+class TourFinder.Models.Log{
+   + <<property>> ID : int
+   + <<property>> Tour : Tour
+   + <<property>> Date : string
+   + <<property>> Report : string
+   + <<property>> Distance : int
+   + <<property>> Duration : stirng
+   + <<property>> Rating : int
+   + <<property>> Steps : int
+   + <<property>> WeightKG : float
+   + <<property>> BloodPreassure : string
+   + <<property>> Feeling : string
+   + <<property>> Weather : string
+}
+
+class TourFinder.BusinessLayer.BusinessLayerManager{
+   - DLAM : DataLayerAccesManager
+   - static readonly log : log4net.ILog
+
+   + GetAllToursFromDB() : List<Tour>
+   + CreateNewTour(name : string, startLocation : string, endLocation : string, description : string) : Tour
+   + CreateNewLogGetLogList(tour : Tour, date : string, report : string, distance : int, duration : string, rating : int, steps : int, weightkg : float, bloddpreassure : string, feeling : string, weather : string) : List<Log>
+   + UpdateTourGetList(tour : Tour, name : string, description : string ) : List<Tour>
+   + UpdateLogGetList(log : Log, date : string, report : string, distance : int, duration : string, rating : int, steps : int, weightkg : float, bloddpreassure : string, feeling : string, weather : string) : List<Log>
+   + DeleteLogGetList(log : Log) : List<Log>
+   + DeleteTourGetList(tour : Tour) : List<Tour>
+   + CopyLogGetList(log : Log ) : List<Log>
+   + CopyTourGetList(tour : Tour) : List<Tour>
+   + ExportToursToJson(tourlist : IEnumerable<Tour>) : void
+   + ImportToursFromJSON() : List<Tour>
+   + PrintTourDataToPDF(tour : Tour) : void
+   + PrintAllToursToPDF(tourlist : IEnumerable<Tour>) : void
+   + PrintSummary(tourList : IEnumerable<Tour>) : void
+   + DeleteUnusedImages (savedImageCounter : int) : int
+   + Search(itemName : string) : IEnumerable<Tour>
+}
+
+class TourFinder.BusinessLayer.PDF.PDFMaker{
+   + static imagePath : string
+   + static headerFont : PdfFont
+   + static normalFont : PdfFont
+   + static filepath : string
+   + static FALLBACKIMAGE : string
+   - static readonly log : log4net.ILog
+
+   + static MakeTourPDF(tour : Tour, filename : string) : void
+   + static MakeAllTourPDF(tourlist : IEnumerable<Tour>, filename : string) : void
+   + static MakeTourSummaryPDF(tourlist : IEnumerable<Tour>, filename : string)
+}
+
+TourFinder.DataAccessLayer.PostgresSqlDB.TourSqlPostgresDAO --|> TourFinder.DataAccessLayer.DAObject.ITourDAO
+TourFinder.DataAccessLayer.PostgresSqlDB.LogSqlPostgresDAO --|> TourFinder.DataAccessLayer.DAObject.ITourLogDAO
+TourFinder.DataAccessLayer.PostgresSqlDB.PostgresSqlConnector --|> TourFinder.DataAccessLayer.Common.IDBAccess
+TourFinder.DataAccessLayer.MapQuestConnector.RestDataClass --|> TourFinder.DataAccessLayer.Common.IMapQuestAccess
+
+@enduml

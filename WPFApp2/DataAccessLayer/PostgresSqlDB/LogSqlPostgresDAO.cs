@@ -25,12 +25,12 @@ namespace TourFinder.DataAccessLayer.PostgresSqlDB
                                                 "WHERE id = @id";
 
         private IDBAccess database;
-        private ITourDAO tourDAO;
+        //private ITourDAO tourDAO;
 
-        public LogSqlPostgresDAO(IDBAccess database, ITourDAO tourDAO)
+        public LogSqlPostgresDAO(IDBAccess database)
         {
             this.database = database;
-            this.tourDAO = tourDAO;
+            //this.tourDAO = tourDAO;
         }
 
         public Log AddNewTourLog(Tour tour, string date, string report = "\"\"", int distance = 0, string duration = "\"\"", 

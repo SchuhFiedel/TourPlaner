@@ -101,7 +101,7 @@ namespace NUnitTestProject1
         {
             var db = PostgresSqlConnector.Instance();
             var tourdao = new TourSqlPostgresDAO(db);
-            Filemanager fm = Filemanager.GetInstance(tourdao, new LogSqlPostgresDAO(db, tourdao));
+            Filemanager fm = Filemanager.GetInstance(tourdao, new LogSqlPostgresDAO(db));
             Assert.IsNotNull(fm.GetAllImagesFromFolder());
         }
 
@@ -144,6 +144,26 @@ namespace NUnitTestProject1
         {
             RestDataClass RDC = RestDataClass.Instance();
             Assert.IsNotNull(RDC);
+        }
+
+        [Test]
+        public void SearchTest_BLM()
+        {
+            BusinessLayerManager BLM = new BusinessLayerManager();
+            BLM.CreateNewTour("SEARCHTEST1", "Stephansplatz,Vienna,Austria", "Mariahilfer-Straße,Vienna,Austria", "");
+            List<Tour> searchList = (List<Tour>)BLM.Search("SEARCHTEST1");
+            Assert.AreEqual(1, searchList.Count);
+            BLM.DeleteTourGetList(searchList[0]);
+        }
+
+        [Test]
+        public void GetAllImagesFromDB()
+        {
+            BusinessLayerManager BLM = new BusinessLayerManager();
+            List<Tour> tourlist = BLM.GetAllToursFromDB();
+            TourSqlPostgresDAO tourdao = new TourSqlPostgresDAO(PostgresSqlConnector.Instance());
+            List<string> imageList = (List<string>)tourdao.GetAllTourImages();
+            Assert.AreEqual(tourlist.Count, imageList.Count);
         }
 
         //Misc
